@@ -2472,4 +2472,202 @@ class Solution(object):
 
 
 
+
+
+
+
+
+
+#  每日一题
+
+### 1. 对角线上不同值的数量差
+
+> 给你一个下标从 `0` 开始、大小为 `m x n` 的二维矩阵 `grid` ，请你求解大小同样为 `m x n` 的答案矩阵 `answer` 。
+>
+> 矩阵 `answer` 中每个单元格 `(r, c)` 的值可以按下述方式进行计算：
+>
+> - 令 `topLeft[r][c]` 为矩阵 `grid` 中单元格 `(r, c)` 左上角对角线上 **不同值** 的数量。
+> - 令 `bottomRight[r][c]` 为矩阵 `grid` 中单元格 `(r, c)` 右下角对角线上 **不同值** 的数量。
+>
+> 然后 `answer[r][c] = |topLeft[r][c] - bottomRight[r][c]|` 。
+>
+> 返回矩阵 `answer` 。
+>
+> **矩阵对角线** 是从最顶行或最左列的某个单元格开始，向右下方向走到矩阵末尾的对角线。
+>
+> 如果单元格 `(r1, c1)` 和单元格 `(r, c) `属于同一条对角线且 `r1 < r` ，则单元格 `(r1, c1)` 属于单元格 `(r, c)` 的左上对角线。类似地，可以定义右下对角线。
+
+- 朴素做法:模拟整个计算过程，遍历每个位置。计算对应的**左上角的不同元素个数**，以及**右下角的不同元素个数**
+
+  ```python
+  class Solution:
+      def differenceOfDistinctValues(self, grid: List[List[int]]) -> List[List[int]]:
+          m  = len(grid)
+          n = len(grid[0])
+  
+          answer = [[0 for _ in range(n)] for _ in range(m)]
+          for i in range(m):
+              for j in range(n):
+                  leftup = set()
+                  rightdown =set()
+                  k = i-1
+                  v = j-1
+                  while(k>=0 and v >= 0):
+                      leftup.add(grid[k][v])
+                      k = k - 1
+                      v = v - 1
+                  k = i+1
+                  v = j+1 
+                  while(k<m and v<n):
+                      rightdown.add(grid[k][v])
+                      k = k + 1
+                      v = v + 1
+                  answer[i][j] = abs(len(leftup) - len(rightdown))
+          # print(answer)
+          return answer
+  ```
+
+- 先提前将每个位置的 左上角不重复个数 和右下角不重复个数先保留下来
+
+- 第一行第一列往右下角遍历保留 左上角不重复个数
+
+- 最后一行最后一列往左上角遍历保留 右下角不重复个数
+
+  ```python
+  class Solution:
+      def differenceOfDistinctValues(self, grid: List[List[int]]) -> List[List[int]]:
+          m  = len(grid)
+          n = len(grid[0])
+  
+          answer = [[0 for _ in range(n)] for _ in range(m)]
+  
+          # 第一列
+          for i in range(m):
+              j = 0
+              upleft = set()
+              while( i < m  and j < n):
+                  answer[i][j] = len(upleft)
+                  upleft.add(grid[i][j])
+                  i = i + 1
+                  j = j + 1
+  
+          # 第一行
+          for j in range(1,n):
+              i = 0
+              upleft = set()
+              while(i<m and j < n):
+                  answer[i][j] = len(upleft)
+                  upleft.add(grid[i][j])
+                  i = i + 1
+                  j = j + 1
+          
+          for i in range(m):
+              j = n-1
+              rightdown = set()
+              while(i>=0 and j>=0):
+                  answer[i][j] = abs(answer[i][j] - len(rightdown))
+                  rightdown.add(grid[i][j])
+                  i = i - 1
+                  j = j - 1
+          for j in range(n-1):
+              i = m-1
+              rightdown = set()
+              while(i>=0 and j>=0):
+                  answer[i][j] = abs(answer[i][j] - len(rightdown))
+                  rightdown.add(grid[i][j])
+                  i = i - 1
+                  j = j - 1
+          
+          # print(answer)
+          return answer
+  ```
+
+
+
+### 2. [k-avoiding 数组的最小总和](https://leetcode.cn/problems/determine-the-minimum-sum-of-a-k-avoiding-array/)
+
+> 给你两个整数 `n` 和 `k` 。
+>
+> 对于一个由 **不同** 正整数组成的数组，如果其中不存在任何求和等于 k 的不同元素对，则称其为 **k-avoiding** 数组。
+>
+> 返回长度为 `n` 的 **k-avoiding** 数组的可能的最小总和。
+>
+> **示例 1：**
+>
+> ```
+> 输入：n = 5, k = 4
+> 输出：18
+> 解释：设若 k-avoiding 数组为 [1,2,4,5,6] ，其元素总和为 18 。
+> 可以证明不存在总和小于 18 的 k-avoiding 数组。
+> ```
+>
+> **示例 2：**
+>
+> ```
+> 输入：n = 2, k = 6
+> 输出：3
+> 解释：可以构造数组 [1,2] ，其元素总和为 3 。
+> 可以证明不存在总和小于 3 的 k-avoiding 数组。 
+> ```
+
+
+
+# 面试
+
+## 1.最大子数组和
+
+> 给你一个整数数组 `nums` ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+>
+> **子数组**是数组中的一个连续部分。
+>
+>  
+>
+> **示例 1：**
+>
+> ```
+> 输入：nums = [-2,1,-3,4,-1,2,1,-5,4]
+> 输出：6
+> 解释：连续子数组 [4,-1,2,1] 的和最大，为 6 。
+> ```
+>
+> **示例 2：**
+>
+> ```
+> 输入：nums = [1]
+> 输出：1
+> ```
+>
+> **示例 3：**
+>
+> ```
+> 输入：nums = [5,4,-1,7,8]
+> 输出：23
+> ```
+
+- 动态规划 + 前缀和
+
+- `dp[i]`代表的是以 `i` 位置为**结尾的最大子数组和**
+
+  - 因此每次动态规划的转移方程为: `dp[i] = (max(dp[i-1]) + nums[i],nums[i]) `
+  - 即比较以**上一个位置为结尾的最大子数组**和加**当前数** 和 **当前数**单独作为子数组谁更大。
+  - 只需要保存**上一个位置为结尾的最大子数组之和**即可， O(N)+O(1)
+
+  ```python
+  class Solution:
+      def maxSubArray(self, nums: List[int]) -> int:
+          pre = 0
+          max_res= nums[0]
+          for num in nums:
+              pre = max(pre+num,num)
+              max_res = max(max_res,pre)
+          
+          return max_res
+  ```
+
+
+
+## 2.删除一次得到子数组最大和
+
+
+
  

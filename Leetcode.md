@@ -2005,6 +2005,129 @@ public static int solution1(int[] nums) {
 
 # Hot 100
 
+## 1. 两数之和
+
+> 给定一个整数数组 `nums` 和一个整数目标值 `target`，请你在该数组中找出 **和为目标值** *`target`* 的那 **两个** 整数，并返回它们的数组下标。
+>
+> 你可以假设每种输入只会对应一个答案，并且你不能使用两次相同的元素。
+>
+> 你可以按任意顺序返回答案。
+
+- 由于返回的顺序没有限制，可以交换两个顺序
+- 第二个数的索引可以保存到一个字典中
+  - 遍历数组，检查剩下的数在不在字典中，**存在则返回对应的索引**
+  - **不存在则将该数以及索引存到字典中**
+
+```python
+class Solution(object):
+    def twoSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        map = {}
+
+        for idx,num in enumerate(nums):
+            if(target-num in map):
+                return [idx,map[target-num]]
+            map[num] = idx
+        return []
+```
+
+
+
+## 2. 字母异位词分组
+
+> 给你一个字符串数组，请你将 **字母异位词** 组合在一起。可以按任意顺序返回结果列表。
+>
+> **字母异位词** 是由重新排列源单词的所有字母得到的一个新单词。
+>
+>  
+>
+> **示例 1:**
+>
+> ```
+> 输入: strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
+> 输出: [["bat"],["nat","tan"],["ate","eat","tea"]]
+> ```
+>
+> **示例 2:**
+>
+> ```
+> 输入: strs = [""]
+> 输出: [[""]]
+> ```
+>
+> **示例 3:**
+>
+> ```
+> 输入: strs = ["a"]
+> 输出: [["a"]]
+> ```
+
+- 如何通过dict保存**字母异位词**：对**每个单词进行排序后组合**作为key
+
+```python
+class Solution(object):
+    def groupAnagrams(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: List[List[str]]
+        """
+        map_str = {}
+        for s in strs:
+            s1 = "".join(sorted(s))
+            if s1 in map_str:
+                map_str[s1].append(s)
+            else:
+                map_str[s1] = [s]
+        
+        return [v for v in map_str.values()]
+```
+
+
+
+## 3. 
+
+> 给定一个未排序的整数数组 `nums` ，找出数字连续的最长序列（不要求序列元素在原数组中连续）的长度。
+>
+> 请你设计并实现时间复杂度为 `O(n)` 的算法解决此问题。
+>
+>  
+>
+> **示例 1：**
+>
+> ```
+> 输入：nums = [100,4,200,1,3,2]
+> 输出：4
+> 解释：最长数字连续序列是 [1, 2, 3, 4]。它的长度为 4。
+> ```
+>
+> **示例 2：**
+>
+> ```
+> 输入：nums = [0,3,7,2,5,8,4,6,0,1]
+> 输出：9
+> ```
+>
+> **示例 3：**
+>
+> ```
+> 输入：nums = [1,0,1,2]
+> 输出：3
+> ```
+
+- 
+
+
+
+## 4.
+
+
+
+## 5.
+
 
 
 # 面试 

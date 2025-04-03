@@ -2005,7 +2005,7 @@ public static int solution1(int[] nums) {
 
 # Hot 100
 
-## 1. 两数之和
+## 1. **两数之和**
 
 > 给定一个整数数组 `nums` 和一个整数目标值 `target`，请你在该数组中找出 **和为目标值** *`target`* 的那 **两个** 整数，并返回它们的数组下标。
 >
@@ -2037,7 +2037,7 @@ class Solution(object):
 
 
 
-## 2. 字母异位词分组
+## 2. **字母异位词分组**
 
 > 给你一个字符串数组，请你将 **字母异位词** 组合在一起。可以按任意顺序返回结果列表。
 >
@@ -2088,7 +2088,7 @@ class Solution(object):
 
 
 
-## 3.最长连续序列
+## 3.**最长连续序列**
 
 > 给定一个未排序的整数数组 `nums` ，找出数字连续的最长序列（不要求序列元素在原数组中连续）的长度。
 >
@@ -2144,13 +2144,214 @@ class Solution(object):
 
   
 
+## 4. 移动零
+
+## 5.**盛最多水的容器**
+
+> 给定一个长度为 `n` 的整数数组 `height` 。有 `n` 条垂线，第 `i` 条线的两个端点是 `(i, 0)` 和 `(i, height[i])` 。
+>
+> 找出其中的两条线，使得它们与 `x` 轴共同构成的容器可以容纳最多的水。
+>
+> 即找到两个数之差 * 两数距离 的最大值
+>
+> 返回容器可以储存的最大水量。
+>
+> **说明：**你不能倾斜容器。
+
+- 核心思想: 已计算得到两个边界的 最大盛水量后，中间比最小边界小的柱子不用遍历，一定比外面遍历过的情况小。
+
+  - 因此双指针每次只需要从最小的一边开始移动，直到移动到比自己大的一根柱子。
+  - 然后再比较两边谁更小并计算更新结果
+
+  ```python
+  class Solution(object):
+      def maxArea(self, height):
+          """
+          :type height: List[int]
+          :rtype: int
+          """
+          #
+          lf = 0
+          rt = len(height)-1
+          res = (rt-lf) * min(height[lf],height[rt])
+          while(lf < rt):
+              if(height[lf] < height[rt]):
+                  temp = height[lf]
+                  while(height[lf] <= temp ):
+                      lf = lf + 1
+                  res = max(res,(rt-lf) * min(height[lf],height[rt]))
+              else:
+                  temp = height[rt]
+                  while(height[rt] <= temp and lf < rt):
+                      rt = rt - 1
+                  res = max(res,(rt-lf) * min(height[lf],height[rt]))
+          return res
+  ```
 
 
-## 4.
+
+## 6. **三数之和**
+
+> 给你一个整数数组 `nums` ，判断是否存在三元组 `[nums[i], nums[j], nums[k]]` 满足 `i != j`、`i != k` 且 `j != k` ，同时还满足 `nums[i] + nums[j] + nums[k] == 0` 。请你返回所有和为 `0` 且不重复的三元组。
+>
+> **注意：**答案中不可以包含重复的三元组。
+>
+> **示例 1：**
+>
+> ```
+> 输入：nums = [-1,0,1,2,-1,-4]
+> 输出：[[-1,-1,2],[-1,0,1]]
+> 解释：
+> nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0 。
+> nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0 。
+> nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0 。
+> 不同的三元组是 [-1,0,1] 和 [-1,-1,2] 。
+> 注意，输出的顺序和三元组的顺序并不重要。
+> ```
+>
+> **示例 2：**
+>
+> ```
+> 输入：nums = [0,1,1]
+> 输出：[]
+> 解释：唯一可能的三元组和不为 0 。
+> ```
+>
+> **示例 3：**
+>
+> ```
+> 输入：nums = [0,0,0]
+> 输出：[[0,0,0]]
+> 解释：唯一可能的三元组和为 0 。
+> ```
+
+- **不重复的核心是三个数按照顺序记录**:`a,b,c`
+- 当地一个数确定时，**两数之和**也确定了，因此可以采用双指针进行 **有序数组两数之和**判定
+  - 不能出现重复，需要**跳过重复的** `a`
+  - 当找到符合一个要求的两数之和后，需要将 **左右指针一起往中间移动且要跳过重复的数**
+
+```python
+class Solution(object):
+    def threeSum(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        if(len(nums) == 3):
+            if(sum(nums) == 0):
+                return [nums]
+            else:
+                return []
+        nums = sorted(nums)
+        n = len(nums)
+        res = []
+
+        for i in range(n):
+            if(i>0 and nums[i] == nums[i-1]):
+                continue
+            left = i + 1
+            right = n -1
+            target = -nums[i]
+
+            while(left < right):
+                if(nums[left]+nums[right] > target):
+                    right = right - 1
+                elif(nums[left]+nums[right] < target):
+                    left = left + 1
+                else:
+                    res.append([nums[i],nums[left],nums[right]])
+                    lf = nums[left]
+                    rt = nums[right]
+
+                    while(left < right and nums[left] == lf and nums[right] == rt):
+                        left = left + 1
+                        right = right - 1
+            
+        return resf
+```
 
 
 
-## 5.
+## 7. **接雨水**
+
+> 给定 `n` 个非负整数表示每个宽度为 `1` 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
+
+- **当前位置能接到的最大雨水，取决于左右两边最大值中最小值**
+
+- **动态规划**: 维护两个数组，分别记录**当前位置及其左边的最大值**和**当前位置及其右边的最大值**
+
+  ```python
+  class Solution(object):
+      def trap(self, nums):
+          """
+          :type height: List[int]
+          :rtype: int
+          """
+          n = len(nums)
+          lt_nums = [0] * n 
+          rt_nums = [0] * n 
+  
+          lt_nums[0] = nums[0]
+          rt_nums[-1] = nums[-1]
+          res = 0
+  
+          for i in range(1,n):
+              j = n-1-i 
+              lt_nums[i] = max(lt_nums[i-1],nums[i])
+              rt_nums[j] = max(rt_nums[j+1],nums[j])
+  
+          for i in range(n):
+              res = res + (min(lt_nums[i],rt_nums[i]) - nums[i])
+          return res
+  
+  ```
+
+  
+
+- 双指针: 由于需要记录 **当前位置左边的最大值 与 当前位置右边的最大值** 并且取两者的最小值。
+
+  - 对于左边的数来说，**左边的最大值是能通过左指针确定**
+
+  - 右边的数来说，**右边的最大值能够通过右指针确定**
+
+  - 比较这两个最大值谁更小
+
+    - 若是左边小，则左边的数能够确定最小雨水，因为右边的最大值 >= 此时记录的右指针经过的最大值
+    - 右边同理，交叉进行更新
+
+    ```python
+    class Solution(object):
+        def trap(self, nums):
+            """
+            :type height: List[int]
+            :rtype: int
+            """
+            n = len(nums)
+            left = 0
+            right = n - 1
+    
+            lt_max = nums[0]
+            rt_max = nums[-1]
+    
+            res = 0
+            while(left <= right):
+                
+                if(lt_max < rt_max):
+                    res = (lt_max-nums[left]) + res
+                    left = left + 1
+                    lt_max = max(nums[left],lt_max)
+                else:
+                    res = (rt_max-nums[right]) + res
+                    right = right - 1
+                    rt_max = max(rt_max,nums[right])
+            return res
+    ```
+
+    
+
+## 8. 无重复字符的最长子串
+
+## 9.
 
 
 

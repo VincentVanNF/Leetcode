@@ -2470,7 +2470,7 @@ class Solution(object):
 
 
 
-##  11. 滑动窗口中的最大值
+##  11. **滑动窗口中的最大值**
 
 > 给你一个整数数组 `nums`，有一个大小为 `k` 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 `k` 个数字。滑动窗口每次只向右移动一位。
 >
@@ -2508,15 +2508,75 @@ class Solution(object):
   - 右边元素加入堆，O(log(n))
   - 移除掉根元素在窗口外的元素
   - 每个元素最多只会被加入和移除一次，因此内循环的时间复杂度降低到O(log(n))
+  - 涉及到移除元素，所以需要存储元素的下标
 - O(log(n))，O(n)
+
+```python
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+
+        #初始化堆,python堆为默认小根堆
+        wind_heap = [(-nums[i],i) for i in range(k)]
+        heapq.heapify(wind_heap)
+        res = [-wind_heap[0][0]]
+
+        for r in range(k,len(nums)):
+            #此时窗口为 [r-k+1,r]
+            heapq.heappush(wind_heap,(-nums[r],r))\
+            
+            #移除不在窗口内的最大值
+            while(wind_heap[0][1] <= r-k):
+                heapq.heappop(wind_heap)
+            res.append(-wind_heap[0][0])
+        
+        return res
+```
+
+
 
 ### 双端单调队列: `collections.dque(), dque.append(),dque.appendleft(),dque.pop(),dque.popleft()`
 
 - 双端单调队列指的是整个队列 队首和队尾都可以出入元素，不过**队首是最大元素**，且**整个队列单调递减**
+
 - 移动窗口时
   - 右边元素加入时，**仍然需要保持队列单调**：通过`pop`和`append`进行操作
+  
   - 同时pop出不在窗口中的元素
+  
+  - 涉及到移除元素，所以需要存储元素的下标
+  
+    
+  
 - 每个元素只会加入和移除一次，总共O(N),O(k)
+
+```python
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+
+        #初始化单调递减队列
+        wind_que = collections.deque()
+        for i in range(k):
+            while(wind_que and nums[wind_que[-1]] <= nums[i]):
+                wind_que.pop()
+            wind_que.append(i)
+        res = [nums[wind_que[0]]]
+
+        for i in range(k,len(nums)):
+            #加入右窗口到合适位置，保持单调递减队列
+            while(wind_que and nums[i] >= nums[wind_que[-1]]):
+                wind_que.pop()
+            wind_que.append(i)
+
+            #移除左边不在窗口中的位置:r-k+1,r
+            while(wind_que[0] <= i-k):
+                wind_que.popleft()
+            
+            res.append(nums[wind_que[0]])
+        
+        return res
+```
+
+
 
 ## 12. 最小覆盖子串
 
@@ -2551,6 +2611,10 @@ class Solution(object):
 > 解释: t 中两个字符 'a' 均应包含在 s 的子串中，
 > 因此没有符合条件的子字符串，返回空字符串。
 > ```
+
+
+
+## 13.**最大子数组和**
 
 
 
@@ -2650,32 +2714,33 @@ class Solution(object):
 
 - 一维动态规划:两个变量分别记录: **前一个位置为结尾的最大和** 以及 **前一个位置为结尾的最多删除一个元素的最大和**
   - 状态转移方程：
+    - **当前位置为结尾的最多删除一个元素的最大和**：比较**删除当前值**，**删除前面的某个值**，**当前值** 三种情况谁更大。
     - **当前位置为结尾的最大和** =  max(**前一个位置为结尾的最大和**+num,num)
-    - **当前位置为结尾的最多删除一个元素的最大和** = max(**前一个位置为结尾的最多删除一个元素的最大和**+num, **前一个位置为结尾的最大和**)
   - 因此需要先更新下面的状态转移方程。
   - 每次比较: **当前位置为结尾的最多删除一个元素的最大和** ，**当前位置的数大小** 来更新结果。
 
 
 
 ```python
-class Solution(object):
-    def maximumSum(self, arr):
-        """
-        :type arr: List[int]
-        :rtype: int
-        """
+class Solution:
+    def maximumSum(self, arr: List[int]) -> int:
+        '''
+            每次两种选择:
+            删除的元素在前面
+            删除的元素就是arr[i]
+        '''
+        presum_full = arr[0]
+        presum = arr[0]
 
-        dp0 = arr[0]
-        dp1 = arr[0]
+        res = arr[0]
 
-        maxres = min(arr)
+        for i in range(1,len(arr)):
+            
+            presum = max(presum_full,presum+arr[i],arr[i])
+            presum_full = max(presum_full+arr[i],arr[i])
+            res = max(res,presum)
 
-        for num in arr[1:]:
-            dp1 = max(dp1+num,dp0)
-            dp0 = max(dp0+num,num)
-            maxres = max([maxres,dp1,num])
-        return maxres
-
+        return res
 ```
 
 

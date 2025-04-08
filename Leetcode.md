@@ -2616,9 +2616,205 @@ class Solution:
 
 ## 13.**最大子数组和**
 
+## 14. 合并区间
+
+## 15.**轮转数组**
+
+> 给定一个整数数组 `nums`，将数组中的元素向右轮转 `k` 个位置，其中 `k` 是非负数。
+>
+>  
+>
+> **示例 1:**
+>
+> ```
+> 输入: nums = [1,2,3,4,5,6,7], k = 3
+> 输出: [5,6,7,1,2,3,4]
+> 解释:
+> 向右轮转 1 步: [7,1,2,3,4,5,6]
+> 向右轮转 2 步: [6,7,1,2,3,4,5]
+> 向右轮转 3 步: [5,6,7,1,2,3,4]
+> ```
+>
+> **示例 2:**
+>
+> ```
+> 输入：nums = [-1,-100,3,99], k = 2
+> 输出：[3,99,-1,-100]
+> 解释: 
+> 向右轮转 1 步: [99,-1,-100,3]
+> 向右轮转 2 步: [3,99,-1,-100]
+> ```
+
+### 循环覆盖法
+
+- 数组元素向右移动存在一个规律即：**从一个元素出发，移动后一定能够再次回到原位置**
+- 从一个位置开始，先将 `(i+k)%n`位置的元素进行保存，然后将上一个数 `i` 放入 `(i+k)%n`，最后更新上一个数
+- 回到原位置后，根据一直保存的上一个数 更新原位置的值，此时
+  - 没有遍历完: 起始位置 + 1继续循环
+  - 否则已经遍历完成
+
+```python
+class Solution(object):
+    def rotate(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: None Do not return anything, modify nums in-place instead.
+        """
+        n = len(nums)
+        k = k % n 
+        count = 0
+        idx = 0
+
+        while(count < n):
+            prenum = nums[idx]
+            nextidx = (idx + k) % n
+
+            while(nextidx != idx):
+                temp = nums[nextidx]
+                nums[nextidx] = prenum
+                prenum = temp
+                nextidx = (nextidx + k) % n
+                count = count + 1
+            
+            nums[nextidx] = prenum
+            idx = idx + 1
+
+            count = count + 1
+    
+```
 
 
 
+### **通过数组反转实现**
+
+- 往右轮转最终实现的效果是:
+  - 末尾的k的数 -> 开头的k位置
+  - 开头的n-k个数 -> 末尾的n-k个位置
+  - k=3, [1,2,3,4,5,6,7] -> [5,6,7,1,2,3,4]
+- 等价于
+  - 先反转数组
+  - 反转[0:k]，反转[k:]
+
+```python
+class Solution(object):
+    def rotate(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: None Do not return anything, modify nums in-place instead.
+        """
+    
+        def reverse(nums,left,right):
+            while(left < right):
+                temp = nums[right]
+                nums[right] = nums[left]
+                nums[left] = temp 
+                left = left + 1
+                right = right - 1
+                
+        k = k % len(nums)
+        left = 0
+        right = len(nums)-1
+        reverse(nums,left,right)
+        
+        left = 0
+        right = k-1
+        reverse(nums,left,right)
+
+        left = k
+        right = len(nums)-1
+        reverse(nums,left,right)
+```
+
+
+
+## 16.除自身以外数组的乘积
+
+```
+给你一个整数数组 nums，返回 数组 answer ，其中 answer[i] 等于 nums 中除 nums[i] 之外其余各元素的乘积 。
+
+题目数据 保证 数组 nums之中任意元素的全部前缀元素和后缀的乘积都在  32 位 整数范围内。
+
+请 不要使用除法，且在 O(n) 时间复杂度内完成此题。
+
+ 
+
+示例 1:
+
+输入: nums = [1,2,3,4]
+输出: [24,12,8,6]
+示例 2:
+
+输入: nums = [-1,1,0,-3,3]
+输出: [0,0,9,0,0]
+```
+
+### O(1) + O(N)
+
+- 核心思路: **当前位置的结果** = **前序数组乘积** * **后序数组乘积**
+- 不使用数组存储，通过两次遍历更新结果
+  - 第一次遍历，获取到 `res[i] *= p[i-1]` 此时`p`代表当前位置之前的乘积
+  - 第二次遍历，更新 `res[j] *= p[j+1] `，此时`p`代表当前位置之后的乘积
+
+```python
+class Solution(object):
+    def productExceptSelf(self, nums):
+        """
+            :type nums: List[int]
+            :rtype: List[int]
+        """
+        res = [1] * len(nums)
+        p = 1
+
+        for i in range(len(nums)):
+            res[i] = res[i] * p
+            p = p * nums[i]
+        
+        p = 1
+        for j in range(len(nums)-1,-1,-1):
+            res[j] = res[j] * p 
+            p = p*nums[j]
+        
+        return res
+       
+```
+
+
+
+## 17. 缺失的第一个正数
+
+> 给你一个未排序的整数数组 `nums` ，请你找出其中没有出现的最小的正整数。
+>
+> 请你实现时间复杂度为 `O(n)` 并且只使用常数级别额外空间的解决方案。
+>
+>  
+>
+> **示例 1：**
+>
+> ```
+> 输入：nums = [1,2,0]
+> 输出：3
+> 解释：范围 [1,2] 中的数字都在数组中。
+> ```
+>
+> **示例 2：**
+>
+> ```
+> 输入：nums = [3,4,-1,1]
+> 输出：2
+> 解释：1 在数组中，但 2 没有。
+> ```
+>
+> **示例 3：**
+>
+> ```
+> 输入：nums = [7,8,9,11,12]
+> 输出：1
+> 解释：最小的正数 1 没有出现。
+> ```
+
+- 
 
 
 

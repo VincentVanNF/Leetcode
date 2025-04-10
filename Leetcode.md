@@ -2780,7 +2780,7 @@ class Solution(object):
 
 
 
-## 17. 缺失的第一个正数
+## 17.**缺失的第一个正数**
 
 > 给你一个未排序的整数数组 `nums` ，请你找出其中没有出现的最小的正整数。
 >
@@ -2843,7 +2843,70 @@ class Solution(object):
 
 
 
-## 18. **编辑距离**
+## 18.不同路径
+
+- 因为只能**向下**和**向右**移动
+- 所以在`[i,j]`位置的路径个数等于，上面位置的路径个数加上左边路径的位置个数，即状态转移方程为:
+  - `dp[i][j] = dp[i-1][j] + dp[i][j-1]`
+- 初始化:对于第一行和第一类的元素，路径都是1，因为只能向下和向右移动
+
+```python
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        dp = [[0 for _ in range(n)] for _ in range(m)]
+        for i in range(m):
+            dp[i][0] = 1
+
+        for j in range(n):
+            dp[0][j] = 1
+        
+        for i in range(1,m):
+            for j in range(1,n):
+                dp[i][j] = dp[i-1][j] + dp[i][j-1]
+        
+        return dp[m-1][n-1]
+        
+```
+
+## 19.最小路径和
+
+> 给定一个包含非负整数的 `*m* x *n*` 网格 `grid` ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。
+>
+> **说明：**每次只能向下或者向右移动一步。
+
+- 因为只能向右和向下移动
+- 对于一个位置`[i,j]`的最小路径取决于左边和上边位置的最小值 加上当前位置上的数字。即状态转移方程为:
+  - `dp[i][j] = nums[i][j] + min(dp[i-1][j],dp[i][j-1])`
+- 初始化:对于第一行和第一列的元素，其最小数值和为前缀和
+
+```python
+class Solution:
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+
+        pre = 0
+        for i in range(m):
+            grid[i][0] += pre
+            pre = grid[i][0]
+        
+        pre = 0
+        for j in range(n):
+            grid[0][j] += pre
+            pre = grid[0][j]
+        
+        for i in range(1,m):
+            for j in range(1,n):
+                grid[i][j] = grid[i][j] + min(grid[i-1][j],grid[i][j-1])
+        
+        return grid[m-1][n-1]
+```
+
+## 20.最长回文子串/子序列
+
+## 21.最长公共子序列
+
+## 22.**编辑距离** ⚠️
 
 > 给你两个单词 `word1` 和 `word2`， *请返回将 `word1` 转换成 `word2` 所使用的最少操作数* 。
 >

@@ -2780,7 +2780,7 @@ class Solution(object):
 
 
 
-## 17.**缺失的第一个正数**
+## 17.**缺失的第一个正数** ⚠️
 
 > 给你一个未排序的整数数组 `nums` ，请你找出其中没有出现的最小的正整数。
 >
@@ -3000,6 +3000,149 @@ class Solution(object):
 
 
 ## 24. 杨辉三角/杨辉三角II
+
+## 25. **打家劫舍** ⚠️
+
+> 你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，**如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警**。
+>
+> 给定一个代表每个房屋存放金额的非负整数数组，计算你 **不触动警报装置的情况下** ，一夜之内能够偷窃到的最高金额。
+>
+>  
+>
+> **示例 1：**
+>
+> ```
+> 输入：[1,2,3,1]
+> 输出：4
+> 解释：偷窃 1 号房屋 (金额 = 1) ，然后偷窃 3 号房屋 (金额 = 3)。
+>      偷窃到的最高金额 = 1 + 3 = 4 。
+> ```
+
+- 抽象为求一个数组的子数组和的最大值，且该子数组不能是相邻元素。
+- 因为数组中数字是非负数，因此最终要取得的最大值一定会加到 **最后一位** 或者 **倒数第二位**，即最终要求的是这两个的一个最大值。
+  - 即徐要求 `dp[n] = max(dp[n-2]+nums[n],dp[n-1])`，而该问题可以分解成子问题,`dp[n-1],dp[n-2]`
+  - 状态转移方程为 `dp[i] = max(dp[i-2] + nums[i], dp[i-1])`
+  - **初始化的时候**: `dp2 = nums[0],dp1 = max(nums[0],nums[1])`，因为`dp`代表的是**相邻两个位置能取得的最大值**
+
+```python
+class Solution(object):
+    def rob(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        n = len(nums)
+        if(n <= 2):
+            return max(nums)
+        
+        dp1 = max(nums[0],nums[1])
+        dp2 = nums[0]
+        res = dp1
+
+        for num in nums[2:]:
+            res = max(dp2 + num, dp1)
+            temp = dp1
+            dp1 = res
+            dp2 = temp
+        return res
+```
+
+
+
+
+
+## 26. 完全平方数
+
+> 给你一个整数 `n` ，返回 *和为 `n` 的完全平方数的最少数量* 。
+>
+> **完全平方数** 是一个整数，其值等于另一个整数的平方；换句话说，其值等于一个整数自乘的积。例如，`1`、`4`、`9` 和 `16` 都是完全平方数，而 `3` 和 `11` 不是。
+
+- 对于一个数，可以确定能够组成他的完全平方数，即小于 `math.sqrt(n)`的数，这些数字组成一个 **选择列表**
+- 遍历方案列表后，最终的结果是求每种方案的最小值。而每种方案可以拆分成一个**子问题，即求去掉这个完全平方数后数字**
+- **状态转移方程**:  $dp[i] = \min_{j=1}^{math.sqrt(n)}(dp[i-j^2] + 1)$，每个位置代表的是当前这个数 `i` 能够被 **选择列表** 中的完全平方和组成的最小个数。
+
+- 初始化, `dp[0] = 0`, $i<j^2$ 的话，dp[i]取最大值`n+1`。整体初始化 `dp[i] = n+1; dp[0]=0`
+- 从`1~n`遍历每个数，
+  - 每个数字`i`需要根据状态转移方程取得最小值
+
+```python
+class Solution(object):
+    def numSquares(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        dp_nums = int(math.sqrt(n))
+        dp = [n+1]*(n+1)
+        dp[0] = 0
+
+        for i in range(1,n+1):
+            dp_temp = n+1
+            for j in range(1,dp_nums+1):
+                if(i>=j*j):
+                    dp_temp = min(dp_temp,dp[i-j*j]+1)
+            dp[i] = dp_temp
+        
+        return dp[n]
+
+```
+
+
+
+## 27. 零钱兑换
+
+> 给你一个整数数组 `coins` ，表示不同面额的硬币；以及一个整数 `amount` ，表示总金额。
+>
+> 计算并返回可以凑成总金额所需的 **最少的硬币个数** 。如果没有任何一种硬币组合能组成总金额，返回 `-1` 。
+>
+> 你可以认为每种硬币的数量是无限的。
+>
+>  
+>
+> **示例 1：**
+>
+> ```
+> 输入：coins = [1, 2, 5], amount = 11
+> 输出：3 
+> 解释：11 = 5 + 5 + 1
+> ```
+
+- 与完全平方数和思路类似，等价于求 `dp[amount]`
+- 这个可以**遍历 所有方案后选择最小的组合**，遍历每种方案时，分解成了子问题求解，即状态转移方程:
+  - $dp[i] = \min_{0}^{len(coins)-1}(dp[i-coins[j]])$
+- 初始化: `dp[i] = amount+1;dp[0]=0`
+
+```python
+class Solution(object):
+    def coinChange(self, coins, amount):
+        """
+        :type coins: List[int]
+        :type amount: int
+        :rtype: int
+        """
+        dp = [amount+1]*(amount+1)
+        print(len(dp))
+        dp[0] = 0
+
+        for a in range(1,amount+1):
+
+            dp_temp = amount+1
+            for coin in coins:
+                if(a >= coin):
+                    dp_temp = min(dp_temp,dp[a-coin]+1)
+            dp[a] = dp_temp
+        if(dp[amount] == amount+1):
+            return -1
+        return dp[amount]
+```
+
+
+
+## 28. 单词拆分
+
+```python
+
+```
 
 
 

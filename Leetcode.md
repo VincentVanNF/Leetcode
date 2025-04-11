@@ -3051,7 +3051,7 @@ class Solution(object):
 
 
 
-## 26. 完全平方数
+## 26. **完全平方数**
 
 > 给你一个整数 `n` ，返回 *和为 `n` 的完全平方数的最少数量* 。
 >
@@ -3089,7 +3089,7 @@ class Solution(object):
 
 
 
-## 27. 零钱兑换
+## 27. **零钱兑换**
 
 > 给你一个整数数组 `coins` ，表示不同面额的硬币；以及一个整数 `amount` ，表示总金额。
 >
@@ -3138,15 +3138,121 @@ class Solution(object):
 
 
 
-## 28. 单词拆分
+## 28. **单词拆分**
 
 ```python
+给你一个字符串 s 和一个字符串列表 wordDict 作为字典。如果可以利用字典中出现的一个或多个单词拼接出 s 则返回 true。
 
+注意：不要求字典中出现的单词全部都使用，并且字典中的单词可以重复使用。
+
+示例 1：
+输入: s = "leetcode", wordDict = ["leet", "code"]
+输出: true
+解释: 返回 true 因为 "leetcode" 可以由 "leet" 和 "code" 拼接成。
+示例 2：
+
+输入: s = "applepenapple", wordDict = ["apple", "pen"]
+输出: true
+解释: 返回 true 因为 "applepenapple" 可以由 "apple" "pen" "apple" 拼接成。
+     注意，你可以重复使用字典中的单词。
+```
+
+- 需要求以最后位置结尾的字符是否满足能够被字典中的单词拼出，设为`dp[n-1]`
+- `dp[i]`代表以 `i`位置为结尾的字符串是否满足要求。
+- 假设前面的每个位置结尾的子字符的满足情况已知，则当前结束位置为`i`的字符是否满足情况取决于 ；即状态转移方程，`dp[i] == 1`当且仅当以下条件满足其中一个：
+  -  遍历之前每一个存储的`dp`值，如果`dp[j]`满足要求，则判断`s[j+1:i+1]`的字符是否满足要求
+  - `s[:i+1]`是否在单词表中
+- 初始化`dp[i] = 0`
+
+```python
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        """
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: bool
+        """
+        n = len(s)
+        dp = [False] * n
+
+        for i in range(n):
+            #求dp[i]
+            dp_temp = False
+            for j in range(i):
+                if(dp[j] == 1):
+                    if(s[j+1:i+1] in wordDict):
+                        dp_temp = True
+            if(s[:i+1] in wordDict):
+                dp_temp = True
+            dp[i] = dp_temp
+        
+        return dp[n-1]
 ```
 
 
 
-## 最长递增子序列
+## 29. **最长递增子序列** ⚠️
+
+> 给你一个整数数组 `nums` ，找到其中最长严格递增子序列的长度。
+>
+> **子序列** 是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，`[3,6,2,7]` 是数组 `[0,3,1,6,2,2,7]` 的子序列。
+>
+> **示例 1：**
+>
+> ```
+> 输入：nums = [10,9,2,5,3,7,101,18]
+> 输出：4
+> 解释：最长递增子序列是 [2,3,7,101]，因此长度为 4 。
+> ```
+>
+> **示例 2：**
+>
+> ```
+> 输入：nums = [0,1,0,3,2,3]
+> 输出：4
+> ```
+>
+> **示例 3：**
+>
+> ```
+> 输入：nums = [7,7,7,7,7,7,7]
+> 输出：1
+> ```
+
+- `dp[i]`代表当前位置数为结尾的 **最大递增子序列的长度**，
+- 之前的所有 `dp[:i]`已知的前提下,当前的`dp[i]`可以通过之前的值得到，
+  - 即遍历之前的数，找到小于当前数的位置`j`，此时潜在的 `_dp[i] = dp[j]+1`
+  - 最后去 `dp`数组的最大值，即找到 **每个位置为结尾的最大递增子序列** 的最大值
+  - 取所有潜在值的最大值即可，O(N^2),O(N)
+- 初始化 `dp[i] = 1`
+
+```python
+class Solution(object):
+    def lengthOfLIS(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        n = len(nums)
+        dp = [1] * n
+        
+
+        for i in range(1,n):
+            #求解dp[i]
+            temp = 1
+            for j in range(i):
+                if(nums[i] > nums[j]):
+                    temp = max(temp,dp[j]+1)
+            dp[i] = temp
+        return max(dp)
+        
+```
+
+
+
+
+
+
 
 
 

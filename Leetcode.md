@@ -3250,6 +3250,144 @@ class Solution(object):
 
 
 
+## 30. **乘积最大的子数组** ⚠️
+
+> 给你一个整数数组 `nums` ，请你找出数组中乘积最大的非空连续 子数组（该子数组中至少包含一个数字），并返回该子数组所对应的乘积。
+>
+> 测试用例的答案是一个 **32-位** 整数。
+>
+>  
+>
+> **示例 1:**
+>
+> ```
+> 输入: nums = [2,3,-2,4]
+> 输出: 6
+> 解释: 子数组 [2,3] 有最大乘积 6。
+> ```
+>
+> **示例 2:**
+>
+> ```
+> 输入: nums = [-2,0,-1]
+> 输出: 0
+> 解释: 结果不能为 2, 因为 [-2,-1] 不是子数组。
+> ```
+
+- 由于是连续子数组，因此结果一定存在于**以某个数字为结尾的子数组中**
+- `dp[i]`代表以`i`位置为**结尾的子数组的最大乘积**，由于数组内存在负数，因此最大值可能:
+  - `nums[i]`
+  - `nums[i] * dp[i-1]_max`
+  - `nums[i] * dp[i-1]_min`
+- 需要保留两个历史值:
+  - `pre_max = max(nums[i],nums[i]*pre_max_temp,nums[i]*pre_min_temp)`
+  - `pre_min = min(nums[i],nums[i]*pre_max_temp,nums[i]*pre_min_temp)`
+- 初始化三个数为
+  - `res = nums[0]`
+  - `pre_max = nms[0]`
+  - `pre_min - nums[0]`
+
+```python
+class Solution(object):
+    def maxProduct(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+
+        n = len(nums)
+        pre_max = nums[0]
+        pre_min = nums[0]
+
+        res = nums[0]
+
+        for num in nums[1:]:
+            pre_max_temp = pre_max
+            pre_min_temp = pre_min
+
+            pre_max = max(num,num*pre_max_temp,num*pre_min_temp)
+            pre_min = min(num,pre_min_temp*num,pre_max_temp*num)
+
+            res = max(res,pre_max)
+        
+        return res
+
+```
+
+
+
+## 31.**分割等和子集** ⚠️
+
+> 给你一个 **只包含正整数** 的 **非空** 数组 `nums` 。请你判断是否可以将这个数组分割成两个子集，使得两个子集的元素和相等。
+>
+>  
+>
+> **示例 1：**
+>
+> ```
+> 输入：nums = [1,5,11,5]
+> 输出：true
+> 解释：数组可以分割成 [1, 5, 5] 和 [11] 。
+> ```
+>
+> **示例 2：**
+>
+> ```
+> 输入：nums = [1,2,3,5]
+> 输出：false
+> 解释：数组不能分割成两个元素和相等的子集。
+> ```
+
+- 要分割为两个子集，**即数组中某个子集的和等于总和的一半**
+
+- 问题转换为谁否能在数组中找到一个子集，使得和为总和的一半。
+
+- `dp[i]` 代表当前的数字 `i`能否是数组中的某个子集的和
+
+-  
+
+  - 由于每个数字只能使用一次，因此外层先遍历可能的选择，即数组
+
+  - 内层需要从大到小进行遍历，防止出现 `i-num == num`的情况，此时如果只有一个`num`时，`dp[i-num] = dp[num]`为错误
+
+    - `[1,2,5],num=2`时，当`i`遍历到`2,4`时候都会认为是正确
+
+  - 外层遍历时，会讲遍历过的选择对应的`dp[i] = true `
+
+  - 内层遍历时,遇到之前出现过的数字组和当前的数字的和后，对应的和 `dp[i] = true`
+
+  - 状态转移方程
+
+    - `if i>= num and dp[i-num] -> dp[i] = true`
+
+    ```python
+    class Solution(object):
+        def canPartition(self, nums):
+            """
+            :type nums: List[int]
+            :rtype: bool
+            """
+            num_sum = sum(nums)
+    
+            if(num_sum % 2 != 0):
+                return False
+            
+            target = num_sum // 2
+            dp = [False] *(target+1)
+            dp[0] = True
+    
+            for num in nums:
+                for i in range(target,-1,-1):
+                    if(i>=num and dp[i-num]):
+                        dp[i] = True
+            
+            return dp[target]
+    ```
+
+     
+
+## 
+
 
 
 

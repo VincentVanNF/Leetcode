@@ -2,7 +2,7 @@
 
 #   														数组与字符串
 
-## 寻找数组中心下标
+## 1. 寻找数组中心下标
 
 > 给你一个整数数组 `nums` ，请计算数组的 中心下标 。
 >
@@ -38,7 +38,7 @@ public int pivotIndex(int[] nums) {
 
   再遍历数组，`sum`变量存储左边总和，则右边总和为:`sum_all - sum - nums[i]`
 
-## 搜索插入位置
+## 2. 搜索插入位置
 
 > 给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。
 >
@@ -115,7 +115,7 @@ public static int[] solution(int[] nums) {
     }   
 ```
 
-### 选择排序
+选择排序
 
 - 从未选择的的元素种选择最小(大)的元素，按顺序加入到结果数组中:进行交换操作。
 
@@ -150,7 +150,7 @@ public static int[] solution(int[] nums) {
 
 
 
-### 插入排序
+### **插入排序**
 
 - 采用in-place方法，不申请额外的空间。
 - 从第一位数开始，认为前面的数都按顺序排列好。
@@ -1486,7 +1486,6 @@ class Solution(object):
 
 
 
-
 ##  15. [移除元素](https://leetcode.cn/problems/remove-element/): 运动方法相同，不同速度(不同指针意义不同，在不同的情况下移动。)
 
 > 给你一个数组 `nums` 和一个值 `val`，你需要 **原地** 移除所有数值等于 `val` 的元素，并返回移除后数组的新长度。
@@ -1832,7 +1831,6 @@ class Solution(object):
 
 
 
-
 ## 20. **寻找旋转排序数组中的最小值**
 
 > 已知一个长度为 n 的数组，预先按照升序排列，经由 1 到 n 次 旋转 后，得到输入数组。例如，原数组 nums = [0,1,2,4,5,6,7] 在变化后可能得到：
@@ -1999,6 +1997,193 @@ public static int solution1(int[] nums) {
           }
       }
   ```
+
+# 最长/最短系列 题
+
+## 1. **最长公共前缀**
+
+> 写一个函数来查找字符串数组中的最长公共前缀。
+
+
+
+## 2. **最长回文子串**
+
+> 给你一个字符串 `s`，找到 `s` 中最长的回文子串。回文子串例子:abba
+>
+> 如果字符串的反序与原始字符串相同，则该字符串称为回文字符串。
+
+
+
+## 3. **最长回文子序列**
+
+> 给你一个字符串 `s` ，找出其中最长的回文子序列，并返回该序列的长度。
+>
+> 子序列定义为：不改变剩余字符顺序的情况下，删除某些字符或者不删除任何字符形成的一个序列。
+>
+> **示例 1：**
+>
+> ```
+> 输入：s = "bbbab"
+> 输出：4
+> 解释：一个可能的最长回文子序列为 "bbbb" 。
+> ```
+
+
+
+## 4. **最长回文串**
+
+> 给定一个包含大写字母和小写字母的字符串 `s` ，返回 *通过这些字母构造成的 **最长的 回文串*** 的长度。
+>
+> 在构造过程中，请注意 **区分大小写** 。比如 `"Aa"` 不能当做一个回文字符串。
+>
+> **示例 1:**
+>
+> ```
+> 输入:s = "abccccdd"
+> 输出:7
+> 解释:
+> 我们可以构造的最长的回文串是"dccaccd", 它的长度是 7。
+> ```
+
+
+
+## 5. **最长不重复子串**
+
+> 给定一个字符串 `s` ，请你找出其中不含有重复字符的 **最长 子串** 的长度。
+
+
+
+## 6.**最长公共子序列**
+
+> 给定两个字符串 `text1` 和 `text2`，返回这两个字符串的最长 **公共子序列** 的长度。如果不存在 **公共子序列** ，返回 `0` 。
+>
+> 一个字符串的 **子序列** 是指这样一个新的字符串：它是由原字符串在不改变字符的相对顺序的情况下删除某些字符（也可以不删除任何字符）后组成的新字符串。
+>
+> - 例如，`"ace"` 是 `"abcde"` 的子序列，但 `"aec"` 不是 `"abcde"` 的子序列。
+>
+> 两个字符串的 **公共子序列** 是这两个字符串所共同拥有的子序列。
+
+## 7.**最长连续序列**
+
+> 给定一个未排序的整数数组 `nums` ，找出数字连续的最长序列（不要求序列元素在原数组中连续）的长度。
+>
+> 请你设计并实现时间复杂度为 `O(n)` 的算法解决此问题。
+>
+> **示例 1：**
+>
+> ```
+> 输入：nums = [100,4,200,1,3,2]
+> 输出：4
+> 解释：最长数字连续序列是 [1, 2, 3, 4]。它的长度为 4。
+> ```
+>
+> **示例 2：**
+>
+> ```
+> 输入：nums = [0,3,7,2,5,8,4,6,0,1]
+> 输出：9
+> ```
+>
+> **示例 3：**
+>
+> ```
+> 输入：nums = [1,0,1,2]
+> 输出：3
+> ```
+
+
+
+## 8. **最长递增子序列**
+
+> 给你一个整数数组 `nums` ，找到其中最长严格递增子序列的长度。
+>
+> **子序列** 是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，`[3,6,2,7]` 是数组 `[0,3,1,6,2,2,7]` 的子序列。
+
+
+
+## 8.**最大连续1的个数**
+
+> 给定一个二进制数组 `nums` ， 计算其中最大连续 `1` 的个数。 
+
+## 9.**长度最小子数组**
+
+> 给定一个含有 `n` 个正整数的数组和一个正整数 `target` 。
+>
+> 找出该数组中满足其总和大于等于 target 的长度最小的 连续子数组 `[numsl, numsl+1, ..., numsr-1, numsr]` ，并返回其长度。如果不存在符合条件的子数组，返回 `0` 。
+
+##  10. **最大子数组和**
+
+> 给你一个整数数组 `nums` ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+>
+> **子数组**是数组中的一个连续部分。
+>
+> 
+>
+> **示例 1：**
+>
+> ```
+> 输入：nums = [-2,1,-3,4,-1,2,1,-5,4]
+> 输出：6
+> 解释：连续子数组 [4,-1,2,1] 的和最大，为 6 。
+> ```
+>
+> **示例 2：**
+>
+> ```
+> 输入：nums = [1]
+> 输出：1
+> ```
+>
+> **示例 3：**
+>
+> ```
+> 输入：nums = [5,4,-1,7,8]
+> 输出：23
+> ```
+
+
+
+## 11. **删除一次得到子数组最大和**
+
+> 给你一个整数数组，返回它的某个 **非空** 子数组（连续元素）在执行一次可选的删除操作后，所能得到的最大元素总和。换句话说，你可以从原数组中选出一个子数组，并可以决定要不要从中删除一个元素（只能删一次哦），（删除后）子数组中至少应当有一个元素，然后该子数组（剩下）的元素总和是所有子数组之中最大的。
+>
+> 注意，删除一个元素后，子数组 **不能为空**。
+>
+> 
+>
+> **示例 1：**
+>
+> ```
+> 输入：arr = [1,-2,0,3]
+> 输出：4
+> 解释：我们可以选出 [1, -2, 0, 3]，然后删掉 -2，这样得到 [1, 0, 3]，和最大。
+> ```
+>
+> **示例 2：**
+>
+> ```
+> 输入：arr = [1,-2,-2,3]
+> 输出：3
+> 解释：我们直接选出 [3]，这就是最大和。
+> ```
+>
+> **示例 3：**
+>
+> ```
+> 输入：arr = [-1,-1,-1,-1]
+> 输出：-1
+> 解释：最后得到的子数组不能为空，所以我们不能选择 [-1] 并从中删去 -1 来得到 0。
+>   我们应该直接选择 [-1]，或者选择 [-1, -1] 再从中删去一个 -1。
+> ```
+
+
+
+## 12. **乘积最大的子数组**
+
+
+
+
+
 
 
 
@@ -2350,6 +2535,35 @@ class Solution(object):
     
 
 ## 8. 无重复字符的最长子串
+
+
+
+```python
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        n = len(s)
+        wind_str = set()
+
+        lf = 0
+        rt = 0
+        res = 0
+        while(rt < n):
+            if(s[rt] not in wind_str):
+                wind_str.add(s[rt])
+                res = max(res,len(wind_str))
+                rt = rt + 1
+            else:
+                while(s[rt] in wind_str):
+                    wind_str.remove(s[lf])
+                    lf = lf + 1
+        return res
+```
+
+
 
 ## 9. **找到字符串中所有字母异位词** ⚠️
 
@@ -2948,22 +3162,22 @@ class Solution(object):
         n = len(word2)
 
         dp = [[0 for _ in range(n+1)] for _ in range(m+1)]
-
-        #初始化行/列
         for i in range(m+1):
-            dp[i][0] = i 
-        
+            dp[i][0] = i
         for j in range(n+1):
             dp[0][j] = j
         
+
         for i in range(1,m+1):
             for j in range(1,n+1):
                 if(word1[i-1] == word2[j-1]):
-                    dp[i][j] = min(dp[i-1][j-1],dp[i-1][j]+1,dp[i][j-1]+1)
+                    dp[i][j] = dp[i-1][j-1]
                 else:
-                    dp[i][j] = min(dp[i-1][j-1]+1,dp[i-1][j]+1,dp[i][j-1]+1)
+                    dp[i][j] = min(dp[i-1][j-1],dp[i-1][j],dp[i][j-1]) + 1
         
         return dp[m][n]
+
+
 ```
 
 
@@ -3001,15 +3215,638 @@ class Solution(object):
 
 ## 24. 杨辉三角/杨辉三角II
 
+## 25.**打家劫舍**
+
+> 你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，**如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警**。
+>
+> 给定一个代表每个房屋存放金额的非负整数数组，计算你 **不触动警报装置的情况下** ，一夜之内能够偷窃到的最高金额。
+>
+>  
+>
+> **示例 1：**
+>
+> ```
+> 输入：[1,2,3,1]
+> 输出：4
+> 解释：偷窃 1 号房屋 (金额 = 1) ，然后偷窃 3 号房屋 (金额 = 3)。
+>      偷窃到的最高金额 = 1 + 3 = 4 。
+> ```
+>
+> **示例 2：**
+>
+> ```
+> 输入：[2,7,9,3,1]
+> 输出：12
+> 解释：偷窃 1 号房屋 (金额 = 2), 偷窃 3 号房屋 (金额 = 9)，接着偷窃 5 号房屋 (金额 = 1)。
+>      偷窃到的最高金额 = 2 + 9 + 1 = 12 。
+> ```
+
+- 由于整个数组都是非负数，因此最大值一定会加到最后两位数。
+
+- 对于一个位置`i`，子序列`[:i+1]`能获得的最大值 = max(前一位值，前两位值+当前位置值)，即状态转移方程为
+
+  - `dp[i] = max(dp[i-1],dp[i-2]+nums[i])`
+  - `初始化的dp1为第一二个数的最大值，dp1为第一个位置的值`
+
+  ```python
+  class Solution(object):
+      def rob(self, nums):
+          """
+          :type nums: List[int]
+          :rtype: int
+          """
+          if(len(nums) <= 2):
+              return max(nums)
+          
+          dp2 = nums[0]
+          dp1 = max(nums[0],nums[1])
+  
+          res = max(dp1,dp2)
+  
+          for i in range(2,len(nums)):
+              res = max(dp2+nums[i],dp1)    
+              temp = dp1
+              dp1 = res
+              dp2 = temp
+          
+          return res
+  ```
 
 
-## 最长递增子序列
+
+## 26.完全平方数
+
+> 给你一个整数 `n` ，返回 *和为 `n` 的完全平方数的最少数量* 。
+>
+> **完全平方数** 是一个整数，其值等于另一个整数的平方；换句话说，其值等于一个整数自乘的积。例如，`1`、`4`、`9` 和 `16` 都是完全平方数，而 `3` 和 `11` 不是。
+>
+>  
+>
+> **示例 1：**
+>
+> ```
+> 输入：n = 12
+> 输出：3 
+> 解释：12 = 4 + 4 + 4
+> ```
+>
+> **示例 2：**
+>
+> ```
+> 输入：n = 13
+> 输出：2
+> 解释：13 = 4 + 9
+> ```
 
 
 
+- 类似与零钱兑换:可用的零钱列表为 `range(1,math.sqrt(n)+1)`,且每种可以使用多次
+- `dp[i]` 代表数字`i`需要的最小完全平方数数量，`dp[i] = min(dp[i],dp[i-j])`,其中`j`为所有的可用完全平方平方数
+
+```python
+class Solution(object):
+    def numSquares(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        nums = int(math.sqrt(n))
+        nums = [i for i in range(1,nums+1)]
+        
+        dp = [n] * (n+1)
+        dp[0] = 0
+
+        for i in range(1,n+1):
+            for num in nums:
+                if(i>=num*num):
+                    dp[i] = min(dp[i],dp[i-num*num]+1)
+        
+        return dp[n]
+```
+
+## 27.零钱兑换
+
+> 给你一个整数数组 `coins` ，表示不同面额的硬币；以及一个整数 `amount` ，表示总金额。
+>
+> 计算并返回可以凑成总金额所需的 **最少的硬币个数** 。如果没有任何一种硬币组合能组成总金额，返回 `-1` 。
+>
+> 你可以认为每种硬币的数量是无限的。
+
+- 每种硬币可以使用多次，因此
+  - `dp[i]` 代表整数`i`使用的最小硬币数，则遍历所有可用硬币：`dp[i] = min(dp[i],dp[i-coin])` 
+
+```python
+class Solution(object):
+    def coinChange(self, coins, amount):
+        """
+        :type coins: List[int]
+        :type amount: int
+        :rtype: int
+        """
+        dp = [amount+1] * (amount+1)
+        dp[0] = 0
+
+        for num in range(1,amount+1):
+            for coin in coins:
+                if(num>=coin):
+                    dp[num] = min(dp[num],dp[num-coin]+1)
+
+        if(dp[amount] == amount+1):
+            return -1
+        return dp[amount]
 
 
-# 面试 
+```
+
+## 28.单词拆分
+
+> 给你一个字符串 `s` 和一个字符串列表 `wordDict` 作为字典。如果可以利用字典中出现的一个或多个单词拼接出 `s` 则返回 `true`。
+>
+> **注意：**不要求字典中出现的单词全部都使用，并且字典中的单词可以重复使用。
+
+- `dp[i]` 代表字符子串 `s[:i]`是否能被字典中单词拼出，由于每个单词可以使用多次，因此
+- 遍历`i`前面的所有位置`j`，如果出现 `dp[j] = 1 and s[j:i] in wordDict`,则 `dp[i] = 1`
+
+```
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        """
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: bool
+        """
+        n = len(s)
+        dp = [False] *(n+1)
+        dp[0] = True
+
+        for i in range(1,n+1):
+            for j in range(i):
+                if(dp[j] and s[j:i] in wordDict):
+                    dp[i] = True
+        
+        return dp[n]
+
+```
+
+
+
+## 29.最长递增子序列
+
+> 给你一个整数数组 `nums` ，找到其中最长严格递增子序列的长度。
+>
+> **子序列** 是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，`[3,6,2,7]` 是数组 `[0,3,1,6,2,2,7]` 的子序列。
+
+- `dp[i]` 代表第`i`个数字结尾的最长递增子序列的长度
+- 遍历`i` 前面的所有位置`j`的数，如果`nums[j] < nums[i]`,则 `dp[i] = max(dp[i],dp[j]+1)`
+
+```python
+class Solution(object):
+    def lengthOfLIS(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        n = len(nums)
+        dp = [1] * len(nums)
+
+
+        for i in range(1,len(nums)):
+            for j in range(i):
+                if(nums[j] < nums[i]):
+                    dp[i] = max(dp[i],dp[j]+1)
+        
+        return max(dp)
+```
+
+
+
+## 30.**分割等和子集**
+
+> 给你一个 **只包含正整数** 的 **非空** 数组 `nums` 。请你判断是否可以将这个数组分割成两个子集，使得两个子集的元素和相等。
+>
+>  
+>
+> **示例 1：**
+>
+> ```
+> 输入：nums = [1,5,11,5]
+> 输出：true
+> 解释：数组可以分割成 [1, 5, 5] 和 [11] 。
+> ```
+>
+> **示例 2：**
+>
+> ```
+> 输入：nums = [1,2,3,5]
+> 输出：false
+> 解释：数组不能分割成两个元素和相等的子集。
+> ```
+
+- 当和为偶数才有可能分割
+- 问题相当于转换已知一个数 `target`，`nums` 列表中选取的数字之和是否能够组成 `target`,并且每个数字**最多只能使用一次**
+- `dp[i]` 代表数字 `i`是否能够被 `nums` 列表中的数字之和组成
+- 每次从`nums`中选择一个数字`num`,**为了防止该数字被多次利用，需要从末尾遍历数字** `target`,
+  - 当存在一个`dp[i-num]`，则表明数字 `i` 能够被 `nums` 列表中的数字之和组成
+  - 每次遍历一个数字`num`，`dp`列表中该数字只会被使用一次；并且在之后遍历中，该数字`num`也只会被使用一次（因为处在外层循环）
+
+```python
+class Solution(object):
+    def canPartition(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: bool
+        和零钱兑换的一个关系：
+        可以把nums看成是各种零钱组合，整数amount对应这里的target，也就是nums总和的一半。区别在于这里nums里面的值只能用一次。
+        所以外层遍历都是遍历零钱组合，而内层遍历在遍历amount的时候有一个差别，即分割等和子集是倒着遍历，而零钱是正着遍历。
+        这里为什么要倒着遍历就是因为这里的值是不能用两遍，而零钱问题中是可以用多遍的，所以从小到大遍历~~
+        另外一个只判断能否成功一个判断最小零钱只是输出上的差异了。
+        """
+
+        sums = sum(nums)
+        if(sums % 2 != 0):
+            return False
+        target = sums // 2
+        dp = [False] * (target+1)
+        dp[0] = True
+
+        for num in nums:
+            for i in range(target,0,-1):
+                if(i >= num and dp[i-num]):
+                    dp[i] = True
+        
+        return dp[target]
+```
+
+
+
+## 31.最长有效括号
+
+> 给你一个只包含 `'('` 和 `')'` 的字符串，找出最长有效（格式正确且连续）括号 子串 的长度。
+>
+> 左右括号匹配，即每个左括号都有对应的右括号将其闭合的字符串是格式正确的，比如 `"(()())"`。
+>
+>  
+>
+> **示例 1：**
+>
+> ```
+> 输入：s = "(()"
+> 输出：2
+> 解释：最长有效括号子串是 "()"
+> ```
+>
+> **示例 2：**
+>
+> ```
+> 输入：s = ")()())"
+> 输出：4
+> 解释：最长有效括号子串是 "()()"
+> ```
+>
+> **示例 3：**
+>
+> ```
+> 输入：s = ""
+> 输出：0
+> ```
+
+- `dp[i]`代表第`i`个**位置为结尾**的**最长有效括号数量**
+- 只有当`s[i] == ')'`才有可能是有效括号结尾位置
+  - 当前一个位置为‘(’
+    - `dp[i] = dp[i-2]+2`: 当`i-2>=0`
+    - `dp[i] = 2`:  当`i-2<0`
+  - 当前一个位置为‘)’:
+    - 当`i-1-dp[i-1] >=0 and s[i-1-dp[i-1]] == '('`,即当前位置的`)`是一个嵌套括号组合的最外层，
+      - `dp[i] = dp[i-2-dp[i-1]]+2+dp[i-1] `,如果 `i-2-dp[i-1]>=0`
+      - `dp[i] = 2+dp[i-1] `,如果 `i-2-dp[i-1]>=0`
+
+```python
+class Solution(object):
+    def longestValidParentheses(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        if(len(s) < 2):
+            return 0
+
+        dp = [0] * len(s)
+        
+        for i in range(1,len(s)):
+            if(s[i] == ')'):
+                if(s[i-1] == '('):
+                    if(i-2>=0):
+                        dp[i] = dp[i-2]+2
+                    else:
+                        dp[i] = 2
+                else:
+                    if(i-1-dp[i-1]>=0 and s[i-1-dp[i-1]] == '('):
+                        if(i-2-dp[i-1]>=0):
+                            dp[i] = dp[i-2-dp[i-1]]+2+dp[i-1]
+                        else:
+                            dp[i] = 2+dp[i-1]
+
+
+        return max(dp)
+```
+
+
+
+## 32. 多数元素
+
+> 给定一个大小为 `n` 的数组 `nums` ，返回其中的多数元素。多数元素是指在数组中出现次数 **大于** `⌊ n/2 ⌋` 的元素。
+>
+> 你可以假设数组是非空的，并且给定的数组总是存在多数元素。
+>
+> **示例 1：**
+>
+> ```
+> 输入：nums = [3,2,3]
+> 输出：3
+> ```
+>
+> **示例 2：**
+>
+> ```
+> 输入：nums = [2,2,1,1,1,2,2]
+> 输出：2
+> ```
+
+
+
+## 33. **寻找重复数** ⚠️
+
+> 给定一个包含 `n + 1` 个整数的数组 `nums` ，其数字都在 `[1, n]` 范围内（包括 `1` 和 `n`），可知至少存在一个重复的整数。
+>
+> 假设 `nums` 只有 **一个重复的整数** ，返回 **这个重复的数** 。
+>
+> 你设计的解决方案必须 **不修改** 数组 `nums` 且只用常量级 `O(1)` 的额外空间。
+
+- 两次快慢指针
+
+
+
+## 34. 反转链表
+
+> 给你单链表的头节点 `head` ，请你反转链表，并返回反转后的链表。
+>
+>  
+>
+> **示例 1：**
+>
+> ![img](https://assets.leetcode.com/uploads/2021/02/19/rev1ex1.jpg)
+>
+> ```
+> 输入：head = [1,2,3,4,5]
+> 输出：[5,4,3,2,1]
+> ```
+
+- 迭代更新的方法，
+  - 遍历链表时**保存前一个位置的节点**
+  - 更新当前节点的next域
+- 注意在循环链表时，由于需要更新节点的next域 以及遍历到下一个节点时需要使用之前的 next域，因此需要提前保存该值
+
+```python
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+    def reverseList(self, head):
+        """
+        :type head: Optional[ListNode]
+        :rtype: Optional[ListNode]
+        """
+        cur = head
+        pre = None
+
+        while(cur != None):
+            temp = cur.next
+            cur.next = pre
+            pre = cur
+
+            cur = temp
+        
+        return pre
+        
+```
+
+
+
+## 35.螺旋矩阵
+
+> 给你一个 `m` 行 `n` 列的矩阵 `matrix` ，请按照 **顺时针螺旋顺序** ，返回矩阵中的所有元素。
+>
+>  
+>
+> **示例 1：**
+>
+> ![img](https://assets.leetcode.com/uploads/2020/11/13/spiral1.jpg)
+>
+> ```
+> 输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
+> 输出：[1,2,3,6,9,8,7,4,5]
+> ```
+
+- 模拟法：逆时针旋转的轮回顺序为 **向右，向下，向左，向上**，每次需要判断是否已经结束**即结果已满**
+  - 第一次右边移动 `n` 次，下移动 `m-1`次，左移动`n-1`次，上移动`m-2`次
+  - 第二次右移动 `n-2` 次，…
+
+```python
+class Solution(object):
+    def spiralOrder(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: List[int]
+        """
+        m =  len(matrix)
+        n = len(matrix[0])
+
+        res = []
+        i = 0
+        j = -1
+
+        m_t = m
+        n_t = n 
+
+        while(len(res) < m*n):
+            for _ in range(n_t):
+                j = j + 1
+                res.append(matrix[i][j])
+
+            m_t = m_t - 1
+            if(len(res) < m*n):
+                for _ in range(m_t):
+                    i = i + 1
+                    res.append(matrix[i][j])
+            
+            n_t = n_t - 1
+            if(len(res) < m*n):
+                for _ in range(n_t):
+                    j = j - 1
+                    res.append(matrix[i][j])
+            
+            m_t = m_t - 1
+            if(len(res) < m*n):
+                for _ in range(m_t):
+                    i = i - 1
+                    res.append(matrix[i][j])
+            
+            n_t = n_t - 1
+        
+        return res
+```
+
+
+
+## 36. 旋转数组
+
+> 给定一个 *n* × *n* 的二维矩阵 `matrix` 表示一个图像。请你将图像顺时针旋转 90 度。
+>
+> 你必须在**[ 原地](https://baike.baidu.com/item/原地算法)** 旋转图像，这意味着你需要直接修改输入的二维矩阵。**请不要** 使用另一个矩阵来旋转图像。
+>
+> **示例 1：**
+>
+> ![img](https://assets.leetcode.com/uploads/2020/08/28/mat1.jpg)
+>
+> ```
+> 输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
+> 输出：[[7,4,1],[8,5,2],[9,6,3]]
+> ```
+>
+> **示例 2：**
+>
+> ![img](https://assets.leetcode.com/uploads/2020/08/28/mat2.jpg)
+>
+> ```
+> 输入：matrix = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]
+> 输出：[[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]
+> ```
+
+- 先**上下翻转**然后**对角翻转**
+
+```python
+class Solution(object):
+    def rotate(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: None Do not return anything, modify matrix in-place instead.
+        """
+        n = len(matrix)
+        #
+        for i in range(n//2):
+            for j in range(n):
+                temp = matrix[i][j]
+                matrix[i][j] = matrix[n-1-i][j]
+                matrix[n-1-i][j] = temp
+
+        for i in range(n):
+            for j in range(i):
+                temp = matrix[i][j]
+                matrix[i][j] = matrix[j][i]
+                matrix[j][i] = temp
+
+        return matrix
+```
+
+
+
+## 37. 搜索二维矩阵II
+
+> 编写一个高效的算法来搜索 `*m* x *n*` 矩阵 `matrix` 中的一个目标值 `target` 。该矩阵具有以下特性：
+>
+> - 每行的元素从左到右升序排列。
+> - 每列的元素从上到下升序排列。
+>
+>  
+>
+> **示例 1：**
+>
+> ![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/11/25/searchgrid2.jpg)
+>
+> ```
+> 输入：matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 5
+> 输出：true
+> ```
+>
+> **示例 2：**
+>
+> ![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/11/25/searchgrid.jpg)
+>
+> ```
+> 输入：matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 20
+> 输出：false
+> ```
+
+### 二分法
+
+- 每一行或者每一列进行二分法查找
+
+```python
+class Solution(object):
+    def searchMatrix(self, matrix, target):
+        """
+        :type matrix: List[List[int]]
+        :type target: int
+        :rtype: bool
+        """
+        m = len(matrix)
+        n = len(matrix[0])
+
+        
+        for i in range(m):
+            j_lf = 0
+            j_rt = n-1
+            while(j_lf <= j_rt):
+                j_mid = (j_lf+j_rt) // 2
+                if(matrix[i][j_mid] > target):
+                    j_rt = j_mid - 1
+                elif(matrix[i][j_mid] < target):
+                    j_lf = j_mid + 1
+                else:
+                    return True
+        return False
+```
+
+
+
+### Z字搜索
+
+- 初始化查找数为**右上角的数**：`x,y`
+- 如果 `martix[x][y] > target`，说明 `target`的值比 `y` 列下面的值都小,即需要 `y=y-1`
+- 如果 `martix[x][y] < target`，说明 `target`的值比 `x` 行左边的值都大,即需要 `x=x+1`
+
+```python
+class Solution(object):
+    def searchMatrix(self, matrix, target):
+        """
+        :type matrix: List[List[int]]
+        :type target: int
+        :rtype: bool
+        """
+        m = len(matrix)
+        n = len(matrix[0])
+
+        x = 0
+        y = n-1
+
+        while(x < m and y >= 0):
+            if(matrix[x][y] > target):
+                y = y - 1
+            elif(matrix[x][y] < target):
+                x = x + 1
+            else:
+                return True
+
+        return False
+```
+
+
+
+# 面试
+
+
 
 ## 1. 最大子数组和
 
@@ -3129,8 +3966,6 @@ class Solution:
 
         return res
 ```
-
-
 
 
 
@@ -3427,8 +4262,9 @@ class Solution(object):
 - 将每个数字看作是一个节点，并指向下一个数的位置；则一定**存在两个位置的数相同，即指向同一个位置**，此时存在环。
   - 两个数分别从第一个位置和第二个位置出发，在环中某个位置相遇。
   - `a` 代表从开始位置到 **同一个位置** 的距离，`L`代表环的长度，`b`代表 **同一个位置** 到 **相遇位置的距离**，`c`代表 **相遇位置** 返回到 **指向的同一个位置**的距离
+  - 当慢指针走到第一次相遇位置走了 **(a+b)**,此时快指针走了 **2(a+b)**，也相当于快指针走到**相遇位置时绕了k圈**
   - `2(a+b) = a + b + kL; c+b=L`  ---> `a = (k-1)L + c`
-  - 慢指针 从第一个位置出发 和 快指针从相遇位置出发会在 环的起点相遇。
+  - 慢指针 从第一个位置出发 和 快指针从相遇位置出发会在 **环的起点相遇**。
 - 两个核心点
   - 指针从第一个数的指针 和 第二个数的指针开始遍历，直到**两个指针指向**同一个数
   - 慢指针从`0`开始遍历，快指针从指向位置开始。相遇点即为重复数。
@@ -3459,7 +4295,7 @@ class Solution(object):
 
 
 
-## 多数元素
+## 28.多数元素
 
 > 给定一个大小为 `n` 的数组 `nums` ，返回其中的多数元素。多数元素是指在数组中出现次数 **大于** `⌊ n/2 ⌋` 的元素。
 >
@@ -3621,7 +4457,7 @@ class Solution(object):
 
 
 
-## 29.轮转数组
+
 
 
 

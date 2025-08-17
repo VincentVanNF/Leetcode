@@ -3844,6 +3844,235 @@ class Solution(object):
 
 
 
+## 38. 相交链表
+
+> 给你两个单链表的头节点 `headA` 和 `headB` ，请你找出并返回两个单链表相交的起始节点。如果两个链表不存在相交节点，返回 `null` 。
+>
+> 图示两个链表在节点 `c1` 开始相交：
+>
+> 题目数据 **保证** 整个链式结构中不存在环。
+>
+> **注意**，函数返回结果后，链表必须 **保持其原始结构** 。
+
+![img](https://s2.loli.net/2025/08/16/nbm8scdVCvKUY23.png)
+
+- O(M+N)的方法：
+
+  - 假设两个链表相交于某个点的话: 那么**从相交节点开始之后的节点一定都相同**
+  - 将短的链表的使用**头插法填充**，使得两个链表长度一致，然后同时遍历两个链表，直到遇到相同节点
+  - 如果没有相同节点，则会遍历完链表
+
+  ```python
+  # Definition for singly-linked list.
+  # class ListNode(object):
+  #     def __init__(self, x):
+  #         self.val = x
+  #         self.next = None
+  
+  class Solution(object):
+      def getIntersectionNode(self, headA, headB):
+          """
+          :type head1, head1: ListNode
+          :rtype: ListNode
+          """
+          m = 0 
+          n = 0
+  
+          h = headA
+          while(h != None):
+              m = m + 1
+              h = h.next
+          h = headB
+          while(h != None):
+              n = n + 1
+              h = h.next
+          
+          if(m<n):
+              l = n-m
+              while(l > 0):
+                  ht = ListNode()
+                  ht.next = headA
+                  headA = ht
+                  l = l - 1       
+          else:
+              l = m-n 
+              while(l > 0):
+                  ht = ListNode()
+                  ht.next = headB
+                  headB = ht
+                  l = l - 1
+          
+          # print(headA)
+          # print(headB)
+          while(headA != headB):
+              headA = headA.next
+              headB = headB.next
+          
+  
+          return headA
+  
+  ```
+
+
+
+## 39. 反转链表
+
+> 给你单链表的头节点 `head` ，请你反转链表，并返回反转后的链表。
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2021/02/19/rev1ex1.jpg)
+
+
+
+-  初始化前置节点`pre = None`
+- 反转链表 等价与 **每次将当前节点指向前置节点**
+- 每次需要更新 `cur.next`指向前置节点，需要提前**保存该节点从而进行链表遍历**
+
+```python
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+    def reverseList(self, head):
+        """
+        :type head: Optional[ListNode]
+        :rtype: Optional[ListNode]
+        """
+        pre = None
+        cur = head
+
+        while(cur != None):
+            c_next =cur.next
+
+            cur.next = pre
+            pre = cur
+
+            cur = c_next
+
+
+        return pre
+
+```
+
+
+
+## 40.回文链表
+
+> 给你一个单链表的头节点 `head` ，请你判断该链表是否为回文链表。如果是，返回 `true` ；否则，返回 `false` 。
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2021/03/03/pal1linked-list.jpg)
+
+```
+输入：head = [1,2,2,1]
+输出：true
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode.com/uploads/2021/03/03/pal2linked-list.jpg)
+
+```
+输入：head = [1,2]
+输出：false
+```
+
+
+
+### O(N),O(N):
+
+- 将链表的值存储到数组中
+- 通过双指针进行遍历，判断是否对称
+
+```python
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+    def isPalindrome(self, head):
+        """
+        :type head: Optional[ListNode]
+        :rtype: bool
+        """
+        vals = []
+        while(head != None):
+            vals.append(head.val)
+            head = head.next
+
+        st = 0
+        ed = len(vals) - 1
+        
+        while(st < ed):
+            if(vals[st] != vals[ed]):
+                return False
+            st = st + 1
+            ed = ed - 1
+        return True
+
+```
+
+### O(N),O(1)
+
+- 将链表的前半部分进行 **反转链表操作**
+- 判断反转部分和没有反转部分是否相同
+- 注意长度为奇数和偶数的区别:
+  - 奇数的链表不会反转正中间的值，因此**后半段起始位置在中间值之后**
+  - 偶数链表的**后半段起始位置就在反转链表结尾的后面**
+  - 
+
+```python
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+    def isPalindrome(self, head):
+        """
+        :type head: Optional[ListNode]
+        :rtype: bool
+        """
+        l = 0
+        cur = head
+        while(cur != None):
+            l = l + 1
+            cur = cur.next
+        
+        i = 0
+        pre = None
+        cur = head
+
+        while(i < l // 2):
+            temp = cur.next
+            cur.next = pre
+            pre =  cur
+            cur = temp
+            i = i + 1
+        
+        ed = pre
+        if(l % 2 != 0):
+            st = cur.next
+        else:
+            st = cur
+
+        while(st != None and ed != None):
+            if(st.val != ed.val):
+                return False
+            st = st.next
+            ed = ed.next
+        
+        return True
+
+```
+
+
+
 # 面试
 
 

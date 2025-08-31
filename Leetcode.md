@@ -957,45 +957,29 @@ public static int[] quickSort(int[] nums,int left,int right) {
   3. 再遍历上对角线找出矩阵中元素为1并且间隔最大的则为结果。
 
   ```java
-  public static String solution(String str) {
-          int[][] palinMaxtrix = new int[str.length()][str.length()];
-          for(int i = 0;i<palinMaxtrix.length;i++){
-              for(int j = 0; j<=i;j++){
-                  palinMaxtrix[i][j] = 1;
-              }
-          } 
-          // 倒三角从下往上进行动态规划更新状态
-          for(int i = str.length()-1;i>=0;i--){
-              for(int j = i+1;j<str.length();j++){
-                  if(str.charAt(i) == str.charAt(j)){
-                      if(palinMaxtrix[i+1][j-1] == 1){
-                          palinMaxtrix[i][j] = 1;
-                      }
-                      else{
-                          palinMaxtrix[i][j] = 0;
-                      }
-                  }
-                  else{
-                      palinMaxtrix[i][j] = 0;
-                  }
-              }
-          }
+  class Solution(object):
+      def longestPalindrome(self, s):
+          """
+          :type s: str
+          :rtype: str
+          """
+          n = len(s)
+          dp = [[1 if i>=j else 0 for j in range(n)] for i in range(n)]
   
-          int start = 0;
-          int end = 0;
-          int max = 0;
-          for(int i = 0;i<str.length();i++){
-              for(int j = i;j<str.length();j++){
-                  if(palinMaxtrix[i][j] == 1 && (j-i) > max){
-                      max = j - i;
-                      start = i;
-                      end = j;
-                  }
-              }
-          }
-  
-          return str.substring(start, end+1);  
-      }
+          for i in range(n-1,-1,-1):
+              for j in range(i+1,n):
+                  if(s[i] == s[j]):
+                      if(dp[i+1][j-1]):
+                          dp[i][j] = 1
+          res = ""
+          for i in range(n):
+              for j in range(i,n):
+                  if(dp[i][j]):
+                      if(j-i+1 > len(res)):
+                          res = s[i:j+1]
+          
+          return res
+        
   ```
 
 
@@ -1845,33 +1829,34 @@ class Solution(object):
 - 二分法。
 
   - `start = 0; end = n - 1;`
-  - 未旋转的情况，直接返回 `nums[0]`
-  - 通过二分法遍历，`nums[mid] < nums[0]`则更新 `min`
-
-  ```java
-  public static int solution(int[] nums) {
-          int start = 0;
-          int end = nums.length - 1;
-          int min = 0;
-          if(nums[0] <= nums[end]){
-              return nums[0];
-          }
-           
-          while(start <= end){
-              int mid = (start + end)/2;
-              if(nums[mid] >= nums[0]){
-                  start = mid + 1;
-              }
-              else{
-                  min = nums[mid];
-                  end = mid - 1;
-              }
-          }
   
-          return nums[start];
-      }
+  ```java
+  class Solution(object):
+      def findMin(self, nums):
+          """
+          :type nums: List[int]
+          :rtype: int
+          """
+          lf = 0
+          rt = len(nums) - 1
+  
+          while(lf < rt):
+              mid = (lf+rt) // 2
+              if(nums[mid] > nums[lf]):
+                  if(nums[mid] > nums[rt]):
+                      lf = mid + 1
+                  else:
+                      rt = mid - 1
+              else:
+                  if(nums[mid] < nums[rt]):
+                      rt = mid 
+                  else:
+                      lf = mid + 1
+          
+          return nums[lf]
+          
   ```
-
+  
   
 
 ### **同理也可以找该种数组最大值**
@@ -1933,28 +1918,28 @@ public static int solution1(int[] nums) {
 
   
     ```java
-    public static int solution(int[] nums) {
-            int left = 0;
-            int end = 0;
-            int right = 1;
+    class Solution(object):
+        def removeDuplicates(self, nums):
+            """
+            :type nums: List[int]
+            :rtype: int
+            """
+            if(len(nums) <= 1):
+                return len(nums)
+            
+            slow = 1
+            fast = 1
+            n = len(nums)
     
-    
-            while(right < nums.length){
-                if(nums[right] != nums[left]){
-                    end = end + 1;
-                    nums[end] = nums[right];
-    
-                    left = right;
-                    right = right + 1;
-                }
-                else{
-                    while(right < nums.length && nums[right] == nums[left]){
-                        right = right + 1;
-                    }
-                }
-            }
-            return end + 1;
-        }
+            while(fast < n):
+                if(nums[fast] == nums[fast-1]):
+                    fast = fast + 1
+                else:
+                    nums[slow] = nums[fast]
+                    slow = slow + 1
+                    fast = fast + 1 
+            
+            return slow
     ```
   
     
@@ -2331,6 +2316,8 @@ class Solution(object):
 
 ## 4. 移动零
 
+
+
 ## 5.**盛最多水的容器**
 
 > 给定一个长度为 `n` 的整数数组 `height` 。有 `n` 条垂线，第 `i` 条线的两个端点是 `(i, 0)` 和 `(i, height[i])` 。
@@ -2536,7 +2523,27 @@ class Solution(object):
 
 ## 8. 无重复字符的最长子串
 
+> 给定一个字符串 `s` ，请你找出其中不含有重复字符的 **最长 子串** 的长度。
+>
+>  
+>
+> **示例 1:**
+>
+> ```
+> 输入: s = "abcabcbb"
+> 输出: 3 
+> 解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
+> ```
+>
+> **示例 2:**
+>
+> ```
+> 输入: s = "bbbbb"
+> 输出: 1
+> 解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。
+> ```
 
+- 滑动窗口
 
 ```python
 class Solution(object):
@@ -2826,11 +2833,61 @@ class Solution:
 > 因此没有符合条件的子字符串，返回空字符串。
 > ```
 
+- 滑动窗口
 
+  ```python
+  class Solution(object):
+      def minWindow(self, s, t):
+          """
+          :type s: str
+          :type t: str
+          :rtype: str
+          """
+          base_num = {}
+          for ch in t:
+              base_num[ch] = base_num.get(ch,0)+1
+          
+          wind_num = {}
+          cover_num = 0
+          lf = 0
+          rt = 0
+          n = len(s)
+          res = s 
+  
+          while(rt < n):
+  
+              # 全部覆盖完
+              while(rt< n and cover_num < len(base_num)):
+                  if(s[rt] in t):
+                      wind_num[s[rt]] = wind_num.get(s[rt],0)+1
+                      if(wind_num[s[rt]] == base_num[s[rt]]):
+                          cover_num = cover_num + 1
+                  rt = rt + 1
+  
+              # 最小覆盖窗口
+              while(cover_num == len(base_num)):
+                  if(rt-lf < len(res)):
+                      res = s[lf:rt]
+                  if(s[lf] in t):
+                      wind_num[s[lf]] = wind_num[s[lf]] - 1
+                      if(wind_num[s[lf]] < base_num[s[lf]]):
+                          cover_num = cover_num - 1
+                  lf = lf + 1
+          if(lf == 0):
+              return ""
+          return res
+                      
+  ```
+
+  
 
 ## 13.**最大子数组和 / 删除一次得到子数组最大和**
 
+
+
 ## 14. 合并区间
+
+
 
 ## 15.**轮转数组**
 
@@ -2943,24 +3000,22 @@ class Solution(object):
 
 ## 16.除自身以外数组的乘积
 
-```
-给你一个整数数组 nums，返回 数组 answer ，其中 answer[i] 等于 nums 中除 nums[i] 之外其余各元素的乘积 。
-
-题目数据 保证 数组 nums之中任意元素的全部前缀元素和后缀的乘积都在  32 位 整数范围内。
-
-请 不要使用除法，且在 O(n) 时间复杂度内完成此题。
-
- 
-
-示例 1:
-
-输入: nums = [1,2,3,4]
-输出: [24,12,8,6]
-示例 2:
-
-输入: nums = [-1,1,0,-3,3]
-输出: [0,0,9,0,0]
-```
+> 给你一个整数数组 nums，返回 数组 answer ，其中 answer[i] 等于 nums 中除 nums[i] 之外其余各元素的乘积 。
+>
+> 题目数据 保证 数组 nums之中任意元素的全部前缀元素和后缀的乘积都在  32 位 整数范围内。
+>
+> 请 不要使用除法，且在 O(n) 时间复杂度内完成此题。
+>
+>  
+>
+> 示例 1:
+>
+> 输入: nums = [1,2,3,4]
+> 输出: [24,12,8,6]
+> 示例 2:
+>
+> 输入: nums = [-1,1,0,-3,3]
+> 输出: [0,0,9,0,0]
 
 ### O(1) + O(N)
 
@@ -3118,7 +3173,11 @@ class Solution:
 
 ## 20.最长回文子串/子序列
 
+
+
 ## 21.最长公共子序列
+
+
 
 ## 22.**编辑距离** ⚠️
 
@@ -3214,6 +3273,8 @@ class Solution(object):
 
 
 ## 24. 杨辉三角/杨辉三角II
+
+
 
 ## 25.**打家劫舍**
 
@@ -3324,6 +3385,8 @@ class Solution(object):
         return dp[n]
 ```
 
+
+
 ## 27.零钱兑换
 
 > 给你一个整数数组 `coins` ，表示不同面额的硬币；以及一个整数 `amount` ，表示总金额。
@@ -3363,11 +3426,19 @@ class Solution(object):
 > 给你一个字符串 `s` 和一个字符串列表 `wordDict` 作为字典。如果可以利用字典中出现的一个或多个单词拼接出 `s` 则返回 `true`。
 >
 > **注意：**不要求字典中出现的单词全部都使用，并且字典中的单词可以重复使用。
+>
+> **示例 1：**
+>
+> ```
+> 输入: s = "leetcode", wordDict = ["leet", "code"]
+> 输出: true
+> 解释: 返回 true 因为 "leetcode" 可以由 "leet" 和 "code" 拼接成。
+> ```
 
 - `dp[i]` 代表字符子串 `s[:i]`是否能被字典中单词拼出，由于每个单词可以使用多次，因此
 - 遍历`i`前面的所有位置`j`，如果出现 `dp[j] = 1 and s[j:i] in wordDict`,则 `dp[i] = 1`
 
-```
+```python
 class Solution(object):
     def wordBreak(self, s, wordDict):
         """
@@ -3395,6 +3466,14 @@ class Solution(object):
 > 给你一个整数数组 `nums` ，找到其中最长严格递增子序列的长度。
 >
 > **子序列** 是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，`[3,6,2,7]` 是数组 `[0,3,1,6,2,2,7]` 的子序列。
+>
+> **示例 1：**
+>
+> ```
+> 输入：nums = [10,9,2,5,3,7,101,18]
+> 输出：4
+> 解释：最长递增子序列是 [2,3,7,101]，因此长度为 4 。
+> ```
 
 - `dp[i]` 代表第`i`个数字结尾的最长递增子序列的长度
 - 遍历`i` 前面的所有位置`j`的数，如果`nums[j] < nums[i]`,则 `dp[i] = max(dp[i],dp[j]+1)`
@@ -4175,24 +4254,21 @@ class Solution(object):
 
 
 ```python
-class Solution:
-    def maximumSum(self, arr: List[int]) -> int:
-        '''
-            每次两种选择:
-            删除的元素在前面
-            删除的元素就是arr[i]
-        '''
-        presum_full = arr[0]
-        presum = arr[0]
-
+class Solution(object):
+    def maximumSum(self, arr):
+        """
+        :type arr: List[int]
+        :rtype: int
+        """
+        pre = arr[0]
+        pre_d = arr[0]
         res = arr[0]
 
-        for i in range(1,len(arr)):
-            
-            presum = max(presum_full,presum+arr[i],arr[i])
-            presum_full = max(presum_full+arr[i],arr[i])
-            res = max(res,presum)
-
+        for num in arr[1:]:
+            pre_d = max(pre_d+num,pre)
+            pre = max(pre+num,num)
+            res = max(res,pre,pre_d)
+        
         return res
 ```
 

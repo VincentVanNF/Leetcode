@@ -3665,55 +3665,7 @@ class Solution(object):
 
 
 
-## 34. 反转链表
-
-> 给你单链表的头节点 `head` ，请你反转链表，并返回反转后的链表。
->
->  
->
-> **示例 1：**
->
-> ![img](https://assets.leetcode.com/uploads/2021/02/19/rev1ex1.jpg)
->
-> ```
-> 输入：head = [1,2,3,4,5]
-> 输出：[5,4,3,2,1]
-> ```
-
-- 迭代更新的方法，
-  - 遍历链表时**保存前一个位置的节点**
-  - 更新当前节点的next域
-- 注意在循环链表时，由于需要更新节点的next域 以及遍历到下一个节点时需要使用之前的 next域，因此需要提前保存该值
-
-```python
-# Definition for singly-linked list.
-# class ListNode(object):
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
-class Solution(object):
-    def reverseList(self, head):
-        """
-        :type head: Optional[ListNode]
-        :rtype: Optional[ListNode]
-        """
-        cur = head
-        pre = None
-
-        while(cur != None):
-            temp = cur.next
-            cur.next = pre
-            pre = cur
-
-            cur = temp
-        
-        return pre
-        
-```
-
-
-
-## 35.螺旋矩阵
+## 34.螺旋矩阵
 
 > 给你一个 `m` 行 `n` 列的矩阵 `matrix` ，请按照 **顺时针螺旋顺序** ，返回矩阵中的所有元素。
 >
@@ -3721,12 +3673,12 @@ class Solution(object):
 >
 > **示例 1：**
 >
-> ![img](https://assets.leetcode.com/uploads/2020/11/13/spiral1.jpg)
->
 > ```
-> 输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
+>输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
 > 输出：[1,2,3,6,9,8,7,4,5]
 > ```
+
+<img src="https://assets.leetcode.com/uploads/2020/11/13/spiral1.jpg" alt="img" style="zoom:67%;" />
 
 - 模拟法：逆时针旋转的轮回顺序为 **向右，向下，向左，向上**，每次需要判断是否已经结束**即结果已满**
   - 第一次右边移动 `n` 次，下移动 `m-1`次，左移动`n-1`次，上移动`m-2`次
@@ -3779,7 +3731,7 @@ class Solution(object):
 
 
 
-## 36. 旋转数组
+## 35. 旋转数组
 
 > 给定一个 *n* × *n* 的二维矩阵 `matrix` 表示一个图像。请你将图像顺时针旋转 90 度。
 >
@@ -3787,21 +3739,21 @@ class Solution(object):
 >
 > **示例 1：**
 >
-> ![img](https://assets.leetcode.com/uploads/2020/08/28/mat1.jpg)
->
 > ```
-> 输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
+>输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
 > 输出：[[7,4,1],[8,5,2],[9,6,3]]
 > ```
->
+> 
 > **示例 2：**
 >
-> ![img](https://assets.leetcode.com/uploads/2020/08/28/mat2.jpg)
->
 > ```
-> 输入：matrix = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]
+>输入：matrix = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]
 > 输出：[[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]
-> ```
+>```
+
+![img](https://assets.leetcode.com/uploads/2020/08/28/mat1.jpg)
+
+<img src="https://assets.leetcode.com/uploads/2020/08/28/mat2.jpg" alt="img" style="zoom: 80%;" />
 
 - 先**上下翻转**然后**对角翻转**
 
@@ -3831,7 +3783,7 @@ class Solution(object):
 
 
 
-## 37. 搜索二维矩阵II
+## 36. 搜索二维矩阵II
 
 > 编写一个高效的算法来搜索 `*m* x *n*` 矩阵 `matrix` 中的一个目标值 `target` 。该矩阵具有以下特性：
 >
@@ -3842,21 +3794,21 @@ class Solution(object):
 >
 > **示例 1：**
 >
-> ![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/11/25/searchgrid2.jpg)
->
 > ```
-> 输入：matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 5
+>输入：matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 5
 > 输出：true
 > ```
->
+> 
 > **示例 2：**
 >
-> ![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/11/25/searchgrid.jpg)
->
 > ```
-> 输入：matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 20
+>输入：matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 20
 > 输出：false
-> ```
+>```
+
+![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/11/25/searchgrid2.jpg)
+
+![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/11/25/searchgrid.jpg)
 
 ### 二分法
 
@@ -3923,7 +3875,7 @@ class Solution(object):
 
 
 
-## 38. 相交链表
+## 37. **相交链表**
 
 > 给你两个单链表的头节点 `headA` 和 `headB` ，请你找出并返回两个单链表相交的起始节点。如果两个链表不存在相交节点，返回 `null` 。
 >
@@ -3938,7 +3890,7 @@ class Solution(object):
 - O(M+N)的方法：
 
   - 假设两个链表相交于某个点的话: 那么**从相交节点开始之后的节点一定都相同**
-  - 将短的链表的使用**头插法填充**，使得两个链表长度一致，然后同时遍历两个链表，直到遇到相同节点
+  - **将短的链表的使用头插法填充**，使得两个链表长度一致，然后同时遍历两个链表，直到遇到相同节点
   - 如果没有相同节点，则会遍历完链表
 
   ```python
@@ -3954,47 +3906,41 @@ class Solution(object):
           :type head1, head1: ListNode
           :rtype: ListNode
           """
-          m = 0 
-          n = 0
+          def count_len(h):
+              cnt = 0
+              while(h is not None):
+                  cnt = cnt + 1
+                  h = h.next
+              return cnt
+          
+          def h_insert(h,num):
+              while(num > 0):
+                  node = ListNode(0)
+                  #头插法
+                  temp = h
+                  h = node
+                  h.next = temp
+                  num = num - 1
+              return h
+          
+          m = count_len(headA)
+          n = count_len(headB)
   
-          h = headA
-          while(h != None):
-              m = m + 1
-              h = h.next
-          h = headB
-          while(h != None):
-              n = n + 1
-              h = h.next
+          if(m > n):
+              headB = h_insert(headB,m-n)
+          elif(n > m):
+              headA = h_insert(headA,n-m)
           
-          if(m<n):
-              l = n-m
-              while(l > 0):
-                  ht = ListNode()
-                  ht.next = headA
-                  headA = ht
-                  l = l - 1       
-          else:
-              l = m-n 
-              while(l > 0):
-                  ht = ListNode()
-                  ht.next = headB
-                  headB = ht
-                  l = l - 1
-          
-          # print(headA)
-          # print(headB)
           while(headA != headB):
               headA = headA.next
               headB = headB.next
           
-  
           return headA
-  
   ```
 
 
 
-## 39. 反转链表
+## 38. 反转链表
 
 > 给你单链表的头节点 `head` ，请你反转链表，并返回反转后的链表。
 
@@ -4038,7 +3984,7 @@ class Solution(object):
 
 
 
-## 40.回文链表
+## 39.**回文链表**
 
 > 给你一个单链表的头节点 `head` ，请你判断该链表是否为回文链表。如果是，返回 `true` ；否则，返回 `false` 。
 
@@ -4097,6 +4043,8 @@ class Solution(object):
 ```
 
 ### O(N),O(1)
+
+**不能进行全量反转，全量反转之后原来的链表会消失**
 
 - 将链表的前半部分进行 **反转链表操作**
 - 判断反转部分和没有反转部分是否相同

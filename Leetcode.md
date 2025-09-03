@@ -4100,6 +4100,47 @@ class Solution(object):
 
 
 
+## 40. 
+
+> 
+
+- 双指针
+- 原理：Floyd 判圈算法；参考 **33.寻找重复数**，当一个链表中存在环时：
+  - **慢指针从第一个位置出发，快指针从第二个位置出发**
+  - **慢指针一次走一步，快指针一次走两步，则它们一定会相遇。**
+- 如果不存在环，则不会相遇：快指针会先到达链表**最后一个位置或者结束标志(None)**
+
+```python
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def hasCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+        if(head == None):
+            return False
+        slow = head
+        fast = head.next
+
+        while(fast != None and fast.next != None and fast != slow):
+            slow = slow.next
+            fast = fast.next.next
+        
+        if(fast == slow):
+            return True
+        return False
+
+        
+```
+
+
+
 # 面试
 
 

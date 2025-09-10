@@ -4100,9 +4100,23 @@ class Solution(object):
 
 
 
-## 40. 
+## 40. 环形链表
 
-> 
+> 给你一个链表的头节点 `head` ，判断链表中是否有环。
+>
+> 如果链表中有某个节点，可以通过连续跟踪 `next` 指针再次到达，则链表中存在环。 为了表示给定链表中的环，评测系统内部使用整数 `pos` 来表示链表尾连接到链表中的位置（索引从 0 开始）。**注意：`pos` 不作为参数进行传递** 。仅仅是为了标识链表的实际情况。
+>
+> *如果链表中存在环* ，则返回 `true` 。 否则，返回 `false` 。
+
+**示例 1：**
+
+![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/07/circularlinkedlist.png)
+
+```
+输入：head = [3,2,0,-4], pos = 1
+输出：true
+解释：链表中有一个环，其尾部连接到第二个节点。
+```
 
 - 双指针
 - 原理：Floyd 判圈算法；参考 **33.寻找重复数**，当一个链表中存在环时：
@@ -4135,6 +4149,227 @@ class Solution(object):
         if(fast == slow):
             return True
         return False
+
+        
+```
+
+
+
+## 41. 环形链表II
+
+> 给定一个链表的头节点  `head` ，返回链表开始入环的第一个节点。 *如果链表无环，则返回 `null`。*
+>
+> 如果链表中有某个节点，可以通过连续跟踪 `next` 指针再次到达，则链表中存在环。 为了表示给定链表中的环，评测系统内部使用整数 `pos` 来表示链表尾连接到链表中的位置（**索引从 0 开始**）。如果 `pos` 是 `-1`，则在该链表中没有环。**注意：`pos` 不作为参数进行传递**，仅仅是为了标识链表的实际情况。
+
+**不允许修改** 链表。
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2018/12/07/circularlinkedlist.png)
+
+- 思路类似与**寻找重复数**：
+  - 首先快慢指针，相遇到一个点。如果无环则返回null
+  - 然后慢指针从开头开始，与快指针相遇到重复数位置，即环开始的地方。
+
+```python
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def detectCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        if(head == None):
+            return None
+        slow = head
+        fast = head.next
+
+        while(fast != None and fast.next != None and slow != fast):
+            slow = slow.next
+            fast = fast.next.next
+        if(slow != fast):
+            return None
+
+        slow = head
+        fast = fast.next
+        while(slow != fast):
+            slow = slow.next
+            fast = fast.next
+        
+        return slow
+        
+```
+
+
+
+## 42. 合并两个有序链表
+
+> 将两个升序链表合并为一个新的 **升序** 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 
+
+- 思路：
+
+-  首先确定结果的**头节点和尾节点**
+
+- 遍历两个链表，尾插法扩充结果。
+
+- 将剩下的**未遍历完的链表插入结果**
+
+  ```python
+  # Definition for singly-linked list.
+  # class ListNode(object):
+  #     def __init__(self, val=0, next=None):
+  #         self.val = val
+  #         self.next = next
+  class Solution(object):
+      def mergeTwoLists(self, list1, list2):
+          """
+          :type list1: Optional[ListNode]
+          :type list2: Optional[ListNode]
+          :rtype: Optional[ListNode]
+          """
+          if(list1 == None):
+              return list2
+          if(list2 == None):
+              return list1
+          # 尾插法
+          if(list1.val < list2.val):
+              cur1 = list1.next
+              cur2 = list2
+              res_h = list1
+              res_t = res_h
+  
+          else:
+              cur1 = list1
+              cur2 = list2.next
+              res_h = list2
+              res_t = res_h
+  
+          
+          while(cur1 != None and  cur2 != None):
+              if(cur1.val < cur2.val):
+                  temp = cur1.next
+                  res_t.next = cur1
+                  res_t = res_t.next 
+                  cur1 = temp
+              else:
+                  temp = cur2.next
+                  res_t.next = cur2
+                  res_t = res_t.next 
+                  cur2 = temp
+          if(cur1 != None):
+              res_t.next = cur1
+          if(cur2 != None):
+              res_t.next = cur2
+          return res_h
+          
+  ```
+
+
+
+## 43. 寻找旋转排序数组中的最小值
+
+> 已知一个长度为 `n` 的数组，预先按照升序排列，经由 `1` 到 `n` 次 **旋转** 后，得到输入数组。例如，原数组 `nums = [0,1,2,4,5,6,7]` 在变化后可能得到：
+>
+> - 若旋转 `4` 次，则可以得到 `[4,5,6,7,0,1,2]`
+> - 若旋转 `7` 次，则可以得到 `[0,1,2,4,5,6,7]`
+>
+> 注意，数组 `[a[0], a[1], a[2], ..., a[n-1]]` **旋转一次** 的结果为数组 `[a[n-1], a[0], a[1], a[2], ..., a[n-2]]` 。
+>
+> 给你一个元素值 **互不相同** 的数组 `nums` ，它原来是一个升序排列的数组，并按上述情形进行了多次旋转。请你找出并返回数组中的 **最小元素** 。
+>
+> 你必须设计一个时间复杂度为 `O(log n)` 的算法解决此问题。
+
+- 二分法
+
+  -  让左指针与右指针互相逼近，最终结果是循环结束时得到结果因此`lf < rt`,不能取等号
+  - 每次比较 `mid`指针与左右指针的大小
+    - 比左指针大，并且比右指针大：**最小数在mid右边**，`lf = mid + 1`
+    - 比左指针大，但是小于等于右指针：**最小数在mid左边**，`rt = mid - 1`
+    - 小于等于左指针，并且小于右指针：**最小值为mid或者在mid左边**，`rt = mid`
+    - 小于等于左指针，并且大于右指针：**最小值在mid右边**：`lf = mid + 1`
+
+  ```python
+  class Solution(object):
+      def findMin(self, nums):
+          """
+          :type nums: List[int]
+          :rtype: int
+          """
+          lf = 0
+          rt = len(nums) - 1
+  
+          while(lf < rt):
+              mid = (lf + rt) // 2
+              if(nums[mid] > nums[lf]):
+                  if(nums[mid] > nums[rt]):
+                      lf = mid + 1
+                  else:
+                      rt = mid - 1
+              else:
+                  if(nums[mid] < nums[rt]):
+                      rt = mid
+                  else:
+                      lf = mid + 1
+          
+          return nums[lf]
+  
+  ```
+
+  
+
+## 44. 搜索旋转排序数组
+
+> 整数数组 `nums` 按升序排列，数组中的值 **互不相同** 。
+>
+> 在传递给函数之前，`nums` 在预先未知的某个下标 `k`（`0 <= k < nums.length`）上进行了 **向左旋转**，使数组变为 `[nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]`（下标 **从 0 开始** 计数）。例如， `[0,1,2,4,5,6,7]` 下标 `3` 上向左旋转后可能变为 `[4,5,6,7,0,1,2]` 。
+>
+> 给你 **旋转后** 的数组 `nums` 和一个整数 `target` ，如果 `nums` 中存在这个目标值 `target` ，则返回它的下标，否则返回 `-1` 。
+>
+> 你必须设计一个时间复杂度为 `O(log n)` 的算法解决此问题。
+
+- 二分法：由于判定条件是当`mid`指向`target`时，因此循环条件需要取等号`lf<=rt`
+  - 当`target`值比`mid`大时
+    -  当且仅当**数组是倒序**或者是**旋转数组并且mid处在开头区间，并且target值大于开头区间右端点**：`nums[mid] < nums[lf] and target > nums[rt] ` 时，此时`target`值在`mid`左边：
+    -  其他情况时，`target`值在`mid`右边
+  - 当`target`值比`mid`小时
+    -   当且仅当**数组是倒序**或者是**旋转数组并且mid处在结尾区间，并且target值小于结尾区间左端点**：`nums[mid] > nums[rt] and target < nums[lf] ` 时，此时`target`值在`mid`右边：
+    -  其他情况时，`target`值在`mid`左边
+
+```python
+class Solution(object):
+    def search(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: int
+        """
+        lf = 0
+        rt = len(nums) - 1
+
+        while(lf <= rt):
+            mid = (lf+rt) // 2
+
+            # 判断是否在mid左边
+            if(target > nums[mid]):
+                # 倒序和旋转数组，mid处于开头区间的共同点
+                if(nums[mid] < nums[lf] and target > nums[rt]):
+                    rt = mid - 1
+                else:
+                    lf = mid + 1
+            elif(target < nums[mid]):
+                if(nums[mid] > nums[rt] and target < nums[lf]):
+                    lf = mid + 1
+                else:
+                    rt = mid - 1 
+            else:
+                return mid
+        
+        return -1
 
         
 ```

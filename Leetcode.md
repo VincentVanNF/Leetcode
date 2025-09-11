@@ -4498,7 +4498,65 @@ class Solution(object):
 
 
 
+## 3. 寻找随机数组中的中位数
 
+> 给定一个随机数组nums，寻找数组中的中位数
+
+- 如果使用排序，快排也需要O(N*log(N))
+
+-  
+
+  ```python
+  import random
+  
+  # 生成一个随机数组
+  random_array = [random.randint(0, 100) for _ in range(10)]
+  def pivot_idx(nums,lf,rt):
+      temp = nums[lf]
+      while(lf < rt):
+          while(lf < rt and nums[rt] >= temp):
+              rt = rt - 1
+          if(lf < rt):
+              nums[lf] = nums[rt]
+              lf = lf + 1
+          while(lf < rt and nums[lf] <= temp):
+              lf = lf + 1
+          if(lf < rt):
+              nums[rt] = nums[lf]
+              rt = rt - 1
+      nums[lf] = temp
+      return lf
+  
+  def quick_select(nums,lf,rt,k):
+      if(lf == rt):
+          return nums[lf]
+      
+      pivot = pivot_idx(nums,lf,rt)
+      if(pivot > k):
+          return quick_select(nums,lf,pivot-1,k)
+      elif(pivot < k):
+          return quick_select(nums,pivot+1,rt,k)
+      else:
+          return nums[k]   
+  def find_mid(nums):
+      if(len(nums) % 2 == 0):
+          a = quick_select(nums,0,len(nums)-2,len(nums) // 2-1)
+          b = quick_select(nums,1,len(nums)-1,len(nums) // 2)
+          print(a,b)
+          res = (a + b) / 2
+      else:
+          res = quick_select(nums,0,len(nums)-1,len(nums) // 2)
+      
+      return res
+  
+  print(sorted(random_array))
+  print(find_mid(nums=random_array ))
+                  
+       
+      
+  ```
+
+  
 
 
 
@@ -5129,62 +5187,6 @@ class Solution(object):
 > ```
 
 
-
-# 面试
-
-## 1.最大子数组和
-
-> 给你一个整数数组 `nums` ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
->
-> **子数组**是数组中的一个连续部分。
->
->  
->
-> **示例 1：**
->
-> ```
-> 输入：nums = [-2,1,-3,4,-1,2,1,-5,4]
-> 输出：6
-> 解释：连续子数组 [4,-1,2,1] 的和最大，为 6 。
-> ```
->
-> **示例 2：**
->
-> ```
-> 输入：nums = [1]
-> 输出：1
-> ```
->
-> **示例 3：**
->
-> ```
-> 输入：nums = [5,4,-1,7,8]
-> 输出：23
-> ```
-
-- 动态规划 + 前缀和
-
-- `dp[i]`代表的是以 `i` 位置为**结尾的最大子数组和**
-
-  - 因此每次动态规划的转移方程为: `dp[i] = (max(dp[i-1]) + nums[i],nums[i]) `
-  - 即比较以**上一个位置为结尾的最大子数组**和加**当前数** 和 **当前数**单独作为子数组谁更大。
-  - 只需要保存**上一个位置为结尾的最大子数组之和**即可， O(N)+O(1)
-
-  ```python
-  class Solution:
-      def maxSubArray(self, nums: List[int]) -> int:
-          pre = 0
-          max_res= nums[0]
-          for num in nums:
-              pre = max(pre+num,num)
-              max_res = max(max_res,pre)
-          
-          return max_res
-  ```
-
-
-
-## 2.删除一次得到子数组最大和
 
 
 

@@ -4504,29 +4504,38 @@ class Solution(object):
 
 - 如果使用排序，快排也需要O(N*log(N))
 
--  
+-  使用快速选择的方法: 不需要进行排序，只需要找到中位数使得**左边不大于该数，右边的数不小于该数**
+
+  - 奇数情况：随机选择一个数字，使得左边的数不大于该数，右边的数不小于该数；如果此时该数的位置不是中位数的位置，递归遍历左边或右边的数字
+  - 偶数情况：先找到第一个中位数的，此时数组的左边不大于第一个中位数，右边不小于第一个中位数；第二个中位数即为右边的最小值；
 
   ```python
   import random
   
   # 生成一个随机数组
   random_array = [random.randint(0, 100) for _ in range(10)]
+  
   def pivot_idx(nums,lf,rt):
       temp = nums[lf]
+      
       while(lf < rt):
           while(lf < rt and nums[rt] >= temp):
               rt = rt - 1
+          
           if(lf < rt):
               nums[lf] = nums[rt]
               lf = lf + 1
+          
           while(lf < rt and nums[lf] <= temp):
               lf = lf + 1
+          
           if(lf < rt):
               nums[rt] = nums[lf]
-              rt = rt - 1
+              rt = rt - 1  
       nums[lf] = temp
       return lf
   
+  # 直接返回中位数
   def quick_select(nums,lf,rt,k):
       if(lf == rt):
           return nums[lf]
@@ -4537,22 +4546,24 @@ class Solution(object):
       elif(pivot < k):
           return quick_select(nums,pivot+1,rt,k)
       else:
-          return nums[k]   
-  def find_mid(nums):
-      if(len(nums) % 2 == 0):
-          a = quick_select(nums,0,len(nums)-2,len(nums) // 2-1)
-          b = quick_select(nums,1,len(nums)-1,len(nums) // 2)
-          print(a,b)
-          res = (a + b) / 2
-      else:
-          res = quick_select(nums,0,len(nums)-1,len(nums) // 2)
-      
-      return res
+          return nums[k]
+  
+  
+  class Solution(object):
+      def find_mid(nums):
+          n = len(nums)
+          if(n % 2 == 0):
+              a = quick_select(nums,0,n-1,n//2-1)
+              b = min(nums[n//2:n])
+              print(a,b)
+              return (a+b) / 2
+          else:
+              return quick_select(nums,0,n-1,n//2)
+  
+  
   
   print(sorted(random_array))
-  print(find_mid(nums=random_array ))
-                  
-       
+  print(Solution.find_mid(random_array))
       
   ```
 

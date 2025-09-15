@@ -4567,7 +4567,93 @@ class Solution(object):
       
   ```
 
+
+
+## 4. 
+
+> 给定两个整数数组 $a$ 和 $b$，长度分别为 $n$ 和 $m$，以及一个整数 $k$。目标是找到一个公式的最小值：
+>
+> $$|(a[i] - b[j])^2 - k^2|$$
+>
+> 其中 $0 \leq i < n, 0 \leq j < m$。
+>
+> **约束条件：**
+>
+> - $1 \leq n, m \leq 10^5$
+> - $0 \leq k \leq 10^9$
+> - $0 \leq a[i], b[j] \leq 10^9$
+>
+> **测试样例：**
+>
+> 1. **输入：** $n = 5$, $m = 5$, $k = 1$, $a = [5, 3, 4, 1, 2]$, $b = [0, 6, 7, 9, 8]$
+>    **输出：** $0$
+> 2. **输入：** $k = 0$, $a = [5, 3, 4, 1, 2]$, $b = [0, 6, 7, 9, 8]$
+>    **输出：** $1$
+
+- 首先对两个序列进行排序，目标是找`a`,`b`序列中两个值的距离与k最小的值
+
+- 双指针`a[i]`,`b[j]`
+
+  - 如果 `a[i]-b[j]>k`,移动`b[j]`
+  - 如果`a[i]-b[j]<-k`,移动`a[i]`
+  - 否则`b[j] - k <= a[i] <= b[j] + k`
+    - 如果 `a[i] > b[j]`移动`a[i]`
+    - 否则移动`b[j]`
+
+  ```python
   
+  class Solution(object):
+      def min_diff(a,b,k):
+          a = sorted(a)
+          b = sorted(b)
+          
+          m = len(a)
+          n = len(b)
+          
+          i = 0
+          j = 0
+          res =abs( (a[i]-b[j])**2-k**2 )
+          
+          while(i < m and j < n):
+              res = min(abs((a[i]-b[j])**2-k**2),res)
+              if(a[i] > b[j] + k):
+                  j = j  + 1
+              elif(a[i] < b[j] - k):
+                  i = i + 1
+              # b[j]-k <= a[i] <= b[j]+k
+              else:
+                  if(a[i] > b[j]):
+                      i = i + 1
+                  else:
+                      j = j + 1
+          
+          while(i < m):
+              res = min(abs((a[i]-b[n-1])**2-k**2),res)
+              i = i + 1
+          while(j < n):
+              res = min(abs((a[m-1]-b[j])**2-k**2),res)
+              j = j + 1
+                  
+          
+          return res
+  
+  a = [5, 3, 4, 1, 2]
+  b = [0, 6, 7, 9, 8]
+  k = 1
+  print(
+      Solution.min_diff(a,b,k)
+  )
+                  
+                  
+                  
+  
+       
+      
+  ```
+
+  
+
+
 
 
 

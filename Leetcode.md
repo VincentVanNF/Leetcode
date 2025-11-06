@@ -793,7 +793,7 @@ public static int[] quickSort(int[] nums,int left,int right) {
 
 
 
-## 3. 零矩阵
+## 3. 矩阵置零
 
 > 编写一种算法，若M × N矩阵中某个元素为0，则将其所在的行与列清零。
 
@@ -1198,9 +1198,9 @@ class Solution(object):
 
 ## **字符串匹配算法：KMP**
 
-- **模式串的next**数组：每个元素代表 如果当前元素和主串不匹配时候指针 `j`回溯的位置。
+- **模式串的next**数组：每个元素代表 如果当前元素和主串不匹配时候指针 `j`回溯的位置: **大小等于模式串中当前位置前后缀相等的字符串长度**
 
-- `next[j]`的值与 `0~j-1`的字串的相同前缀与后缀的长度,设置 `next[0] == - 1`
+- `next[j]`的值与 `0~j-1`的字串的**相同前缀与后缀的长度,设置 `next[0] == - 1`**
 
   - 从第一位开始比较 `j=1`,`k=next[j-1]`。
 
@@ -1221,51 +1221,51 @@ class Solution(object):
 - O(N+M)
 
   ```java
-   public static int[] getNextpos(String s) {
-          int[ ] next = new int[s.length()];
-  
-          int j = 1;
-          next[0] = -1;
-          int k = next[j-1];
-  
-          while(j<next.length){
-              if( k == -1 || s.charAt(j-1) == s.charAt(k)){
-                  k = k + 1;
-                  next[j] = k;
-                  j = j + 1;
-              }
-              else{
-                  k = next[k];
-              }
-          }
-          return next;                                
-      }
-  
-  
-      public static int kmp(String str,String pattern) {
-          int[] next = getNextpos(pattern);
-          int i = 0;
-          int j = 0;
-          while(i < str.length() && j < pattern.length()){
-              if(j == -1 || str.charAt(i) == pattern.charAt(j)){
-                  i = i + 1;
-                  j = j + 1;
-              }
-              else{
-                  j = next[j];
-              }
-          }
-          if(j>=pattern.length()){
-              return i - j;
-          }
-          else{
-              return - 1;
-          }
-                                          
-      }
+  def get_next(pattern):
+      n = len(pattern)
+      next_l = [0] * n
+      next_l[0] = -1
       
+      i = 1
+      j = next_l[i-1]
+      
+      while(i < n):
+          # 前后缀相等时
+          if(j == -1 or pattern[i] == pattern[j]):
+              next_l[i] = j + 1
+              i = i + 1
+              j = next_l[i-1]
+          else:
+              j = next_l[j]
+      return next_l
   
+      
+  def kmp_search(text,pattern):
+      m = len(text)
+      n = len(pattern)
+      next_l = get_next(pattern)
   
+      i = 0
+      j = 0
+      
+      while(i < m and j < n):
+          #相等时
+          if(j == -1 or text[i] == pattern[j]):
+              i = i + 1
+              j = j + 1
+          else:
+              j = next_l[j]
+          
+      if(j >= n):
+          return i-j
+      else:
+          return -1 
+      
+  # 示例
+  text = "abababcabc"
+  pattern = "abcabc"
+  result = kmp_search(text, pattern)
+  print(f"子串的位置: {result}")
   ```
 
   
@@ -2164,10 +2164,6 @@ public static int solution1(int[] nums) {
 
 
 ## 12. **乘积最大的子数组**
-
-
-
-
 
 
 
@@ -3461,7 +3457,7 @@ class Solution(object):
 
 
 
-## 29.最长递增子序列
+## 29. **最长递增子序列**
 
 > 给你一个整数数组 `nums` ，找到其中最长严格递增子序列的长度。
 >
@@ -3497,9 +3493,13 @@ class Solution(object):
         return max(dp)
 ```
 
+## 30.乘积最大子数组
 
 
-## 30.**分割等和子集**
+
+
+
+## 31.**分割等和子集**
 
 > 给你一个 **只包含正整数** 的 **非空** 数组 `nums` 。请你判断是否可以将这个数组分割成两个子集，使得两个子集的元素和相等。
 >
@@ -3558,7 +3558,7 @@ class Solution(object):
 
 
 
-## 31.最长有效括号
+## 32.最长有效括号
 
 > 给你一个只包含 `'('` 和 `')'` 的字符串，找出最长有效（格式正确且连续）括号 子串 的长度。
 >
@@ -3631,7 +3631,7 @@ class Solution(object):
 
 
 
-## 32. 多数元素
+## 33. 多数元素
 
 > 给定一个大小为 `n` 的数组 `nums` ，返回其中的多数元素。多数元素是指在数组中出现次数 **大于** `⌊ n/2 ⌋` 的元素。
 >
@@ -3653,7 +3653,7 @@ class Solution(object):
 
 
 
-## 33. **寻找重复数** ⚠️
+## 34. **寻找重复数** ⚠️
 
 > 给定一个包含 `n + 1` 个整数的数组 `nums` ，其数字都在 `[1, n]` 范围内（包括 `1` 和 `n`），可知至少存在一个重复的整数。
 >
@@ -3665,7 +3665,11 @@ class Solution(object):
 
 
 
-## 34.螺旋矩阵
+## 35.矩阵置零
+
+
+
+## 36.螺旋矩阵
 
 > 给你一个 `m` 行 `n` 列的矩阵 `matrix` ，请按照 **顺时针螺旋顺序** ，返回矩阵中的所有元素。
 >
@@ -3731,7 +3735,7 @@ class Solution(object):
 
 
 
-## 35. 旋转数组
+## 37. 旋转矩阵
 
 > 给定一个 *n* × *n* 的二维矩阵 `matrix` 表示一个图像。请你将图像顺时针旋转 90 度。
 >
@@ -3783,7 +3787,7 @@ class Solution(object):
 
 
 
-## 36. 搜索二维矩阵II
+## 38. 搜索二维矩阵II
 
 > 编写一个高效的算法来搜索 `*m* x *n*` 矩阵 `matrix` 中的一个目标值 `target` 。该矩阵具有以下特性：
 >
@@ -3875,7 +3879,7 @@ class Solution(object):
 
 
 
-## 37. **相交链表**
+## 39. **相交链表**
 
 > 给你两个单链表的头节点 `headA` 和 `headB` ，请你找出并返回两个单链表相交的起始节点。如果两个链表不存在相交节点，返回 `null` 。
 >
@@ -3940,7 +3944,7 @@ class Solution(object):
 
 
 
-## 38. 反转链表
+## 40. 反转链表
 
 > 给你单链表的头节点 `head` ，请你反转链表，并返回反转后的链表。
 
@@ -3984,7 +3988,7 @@ class Solution(object):
 
 
 
-## 39.**回文链表**
+## 41.**回文链表**
 
 > 给你一个单链表的头节点 `head` ，请你判断该链表是否为回文链表。如果是，返回 `true` ；否则，返回 `false` 。
 
@@ -4100,7 +4104,7 @@ class Solution(object):
 
 
 
-## 40. 环形链表
+## 42. 环形链表
 
 > 给你一个链表的头节点 `head` ，判断链表中是否有环。
 >
@@ -4155,7 +4159,7 @@ class Solution(object):
 
 
 
-## 41. 环形链表II
+## 43. 环形链表II
 
 > 给定一个链表的头节点  `head` ，返回链表开始入环的第一个节点。 *如果链表无环，则返回 `null`。*
 >
@@ -4207,7 +4211,7 @@ class Solution(object):
 
 
 
-## 42. 合并两个有序链表
+## 44. 合并两个有序链表
 
 > 将两个升序链表合并为一个新的 **升序** 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 
 
@@ -4271,7 +4275,7 @@ class Solution(object):
 
 
 
-## 43. 寻找旋转排序数组中的最小值
+## 45. 寻找旋转排序数组中的最小值
 
 > 已知一个长度为 `n` 的数组，预先按照升序排列，经由 `1` 到 `n` 次 **旋转** 后，得到输入数组。例如，原数组 `nums = [0,1,2,4,5,6,7]` 在变化后可能得到：
 >
@@ -4287,12 +4291,17 @@ class Solution(object):
 - 二分法
 
   -  让左指针与右指针互相逼近，最终结果是循环结束时得到结果因此`lf < rt`,不能取等号
-  - 每次比较 `mid`指针与左右指针的大小
-    - 比左指针大，并且比右指针大：**最小数在mid右边**，`lf = mid + 1`
-    - 比左指针大，但是小于等于右指针：**最小数在mid左边**，`rt = mid - 1`
-    - 小于等于左指针，并且小于右指针：**最小值为mid或者在mid左边**，`rt = mid`
-    - 小于等于左指针，并且大于右指针：**最小值在mid右边**：`lf = mid + 1`
-
+  - 每次先判断当前区间是正常区间还是经过了旋转的区间：即判断 `nums[lf] < nums[rt] or nums[lf] > nums[rt] `
+    -  `nums[lf] > nums[rt]`: 此区间一定是旋转区间(倒序为特殊情况)
+      -  `nums[mid] > nums[lf]`：**为旋转区间**并且最小数在区间 `[mid+1,rt]`
+      -  **否则**
+        -  `nums[mid] < nums[rt]`:  **为旋转区间**并且最小数在区间`[lf,mid]`
+        -  **否则**：为倒序区间，最小数在区间`[mid+1,rt]`
+    
+    -  否则为正常区间:
+      -  最小值为左边界
+    
+  
   ```python
   class Solution(object):
       def findMin(self, nums):
@@ -4303,26 +4312,30 @@ class Solution(object):
           lf = 0
           rt = len(nums) - 1
   
-          while(lf < rt):
+  
+          while( lf < rt):
               mid = (lf + rt) // 2
-              if(nums[mid] > nums[lf]):
-                  if(nums[mid] > nums[rt]):
+              # 存在旋转
+              if(nums[lf] > nums[rt]):
+                  if(nums[mid] > nums[lf]):
                       lf = mid + 1
                   else:
-                      rt = mid - 1
+                      # 判断是否为是倒序
+                      if(nums[mid] < nums[rt]):
+                          rt = mid
+                      else:
+                          lf = mid + 1 
+              # 不存在旋转
               else:
-                  if(nums[mid] < nums[rt]):
-                      rt = mid
-                  else:
-                      lf = mid + 1
-          
+                  return nums[lf]
+         
           return nums[lf]
-  
+                  
   ```
-
+  
   
 
-## 44. 搜索旋转排序数组
+## 46. 搜索旋转排序数组  (保证重复数的情况下返回最小下标 & 数字互不相同非最小下标)
 
 > 整数数组 `nums` 按升序排列，数组中的值 **互不相同** 。
 >
@@ -4330,49 +4343,648 @@ class Solution(object):
 >
 > 给你 **旋转后** 的数组 `nums` 和一个整数 `target` ，如果 `nums` 中存在这个目标值 `target` ，则返回它的下标，否则返回 `-1` 。
 >
+> 
+>
 > 你必须设计一个时间复杂度为 `O(log n)` 的算法解决此问题。
 
-- 二分法：由于判定条件是当`mid`指向`target`时，因此循环条件需要取等号`lf<=rt`
-  - 当`target`值比`mid`大时
-    -  当且仅当**数组是倒序**或者是**旋转数组并且mid处在开头区间，并且target值大于开头区间右端点**：`nums[mid] < nums[lf] and target > nums[rt] ` 时，此时`target`值在`mid`左边：
-    -  其他情况时，`target`值在`mid`右边
-  - 当`target`值比`mid`小时
-    -   当且仅当**数组是倒序**或者是**旋转数组并且mid处在结尾区间，并且target值小于结尾区间左端点**：`nums[mid] > nums[rt] and target < nums[lf] ` 时，此时`target`值在`mid`右边：
-    -  其他情况时，`target`值在`mid`左边
+### 46.1 保证重复数的情况下返回最小下标
 
-```python
-class Solution(object):
-    def search(self, nums, target):
-        """
-        :type nums: List[int]
-        :type target: int
-        :rtype: int
-        """
-        lf = 0
-        rt = len(nums) - 1
+- 二分法：比较 `nums[mid]`与 `target`大小
 
-        while(lf <= rt):
-            mid = (lf+rt) // 2
+  - 首先需要保证取到的值是最小值，即**如果当前区间最小值等于目标值则直接返回**
 
-            # 判断是否在mid左边
-            if(target > nums[mid]):
-                # 倒序和旋转数组，mid处于开头区间的共同点
-                if(nums[mid] < nums[lf] and target > nums[rt]):
+  - `target > nums[mid]`：**确定二分区间**
+
+    -   `nums[mid] < nums[lf] and target > nums[rt]`: 取左区间： `rt = mid - 1`
+    - 当  `nums[mid] == nums[lf] and nums[lf] == nums[rt]`,不能确定区间，则缩减区间
+    - 否则取右区间: `lf=mid+1`
+
+  - `target > nums[mid]`
+
+    -  
+    -  `nums[mid] < nums[lf] and target > nums[rt]`: 取左区间： `rt = mid - 1`
+    - 当  `nums[mid] == nums[lf] and nums[lf] == nums[rt]`,不能确定区间，则缩减区间
+    - 否则取右区间: `lf=mid+1`
+
+  - `res = mid`并缩减右边界检查是否存在更小的下标目标值：`rt = mid - 1`
+
+    ```python
+    class Solution(object):
+        def search(self, nums, target):
+            """
+            :type nums: List[int]
+            :type target: int
+            :rtype: int
+            """
+            lf = 0
+            rt = len(nums) - 1
+            res = -1
+            while(lf <= rt):
+                mid = (lf+rt) // 2
+                # 最小值的最小下标
+                if(nums[lf] == target):
+                    return lf
+                if(target > nums[mid]):
+                    if(nums[mid] < nums[lf] and target > nums[rt]):
+                        rt = mid - 1
+                    elif(nums[mid] == nums[lf] and nums[lf] == nums[rt]):
+                        lf = lf + 1
+                        rt = rt - 1
+                    else:
+                        lf = mid + 1
+                elif(target < nums[mid]):
+                    if(nums[mid] > nums[rt] and target < nums[lf]):
+                        lf = mid + 1
+                    elif(nums[mid] == nums[rt] and nums[lf] == nums[rt]):
+                        lf = lf + 1
+                        rt = rt - 1
+                    else:
+                        rt = mid - 1
+                else:
+                    res = mid
                     rt = mid - 1
-                else:
-                    lf = mid + 1
-            elif(target < nums[mid]):
-                if(nums[mid] > nums[rt] and target < nums[lf]):
-                    lf = mid + 1
-                else:
-                    rt = mid - 1 
-            else:
-                return mid
-        
-        return -1
+            return res
+    ```
 
-        
-```
+
+
+
+### 46.2 数字互不相同非最小下标
+
+- 去掉上述保证最小下表的边界条件即可
+
+  ```python
+  class Solution(object):
+      def search(self, nums, target):
+          """
+          :type nums: List[int]
+          :type target: int
+          :rtype: int
+          """
+          lf = 0
+          rt = len(nums) - 1
+  
+          while(lf <= rt):
+              mid = (lf+rt) // 2
+            
+              if(target > nums[mid]):
+                  if(nums[mid] < nums[lf] and target > nums[rt]):
+                      rt = mid - 1
+                  else:
+                      lf = mid + 1
+              elif(target < nums[mid]):
+                  if(nums[mid] > nums[rt] and target < nums[lf]):
+                      lf = mid + 1
+                  else:
+                      rt = mid - 1
+              else:
+                 return mid
+          return -1
+  ```
+
+  
+
+## 47. 搜索旋转排序数组Ⅱ
+
+> 已知存在一个按非降序排列的整数数组 `nums` ，数组中的值不必互不相同。
+>
+> 在传递给函数之前，`nums` 在预先未知的某个下标 `k`（`0 <= k < nums.length`）上进行了 **旋转** ，使数组变为 `[nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]`（下标 **从 0 开始** 计数）。例如， `[0,1,2,4,4,4,5,6,6,7]` 在下标 `5` 处经旋转后可能变为 `[4,5,6,6,7,0,1,2,4,4]` 。
+>
+> 给你 **旋转后** 的数组 `nums` 和一个整数 `target` ，请你编写一个函数来判断给定的目标值是否存在于数组中。如果 `nums` 中存在这个目标值 `target` ，则返回 `true` ，否则返回 `false` 。
+>
+> 你必须尽可能减少整个操作步骤。
+>
+> **示例 1：**
+>
+> ```
+> 输入：nums = [2,5,6,0,0,1,2], target = 0
+> 输出：true
+> ```
+>
+> **示例 2：**
+>
+> ```
+> 输入：nums = [2,5,6,0,0,1,2], target = 3
+> 输出：false
+> ```
+
+- 二分法：在上述代码中去掉保证取最小值的相关边界条件即可
+
+  ```python
+  class Solution(object):
+      def search(self, nums, target):
+          """
+          :type nums: List[int]
+          :type target: int
+          :rtype: int
+          """
+          lf = 0
+          rt = len(nums) - 1
+  
+          while(lf <= rt):
+              mid = (lf+rt) // 2
+            
+              if(target > nums[mid]):
+                  if(nums[mid] < nums[lf] and target > nums[rt]):
+                      rt = mid - 1
+                  elif(nums[mid] == nums[lf] and nums[lf] == nums[rt]):
+                      lf = lf + 1
+                      rt = rt - 1
+                  else:
+                      lf = mid + 1
+              elif(target < nums[mid]):
+                  if(nums[mid] > nums[rt] and target < nums[lf]):
+                      lf = mid + 1
+                  elif(nums[mid] == nums[rt] and nums[lf] == nums[rt]):
+                      lf = lf + 1
+                      rt = rt - 1
+                  else:
+                      rt = mid - 1
+              else:
+                 return True
+          return False
+  ```
+
+  
+
+
+
+## 48. 岛屿数量
+
+> 给你一个由 `'1'`（陆地）和 `'0'`（水）组成的的二维网格，请你计算网格中岛屿的数量。
+>
+> 岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
+>
+> 此外，你可以假设该网格的四条边均被水包围。
+>
+>  
+>
+> **示例 1：**
+>
+> ```
+> 输入：grid = [
+>   ['1','1','1','1','0'],
+>   ['1','1','0','1','0'],
+>   ['1','1','0','0','0'],
+>   ['0','0','0','0','0']
+> ]
+> 输出：1
+> ```
+>
+> **示例 2：**
+>
+> ```
+> 输入：grid = [
+>   ['1','1','0','0','0'],
+>   ['1','1','0','0','0'],
+>   ['0','0','1','0','0'],
+>   ['0','0','0','1','1']
+> ]
+> 输出：3
+> ```
+
+
+
+### 48.1 深度搜索
+
+- O(MN) + O(MN)
+
+-  外层遍历时，**如果为陆地则计数一次，并进行深度搜索淹没所有邻接陆地**
+
+- **深度搜索时将所有陆地淹没**
+
+  ```python
+  def dfs_search(grid,x,y):
+      # 当前的root为(x,y),递归深度搜索
+      m = len(grid)
+      n = len(grid[0])
+      grid[x][y] = '0'
+      # 递归搜索淹没陆地
+      for i,j in [(x-1,y),(x+1,y),(x,y-1),(x,y+1)]:
+          if( 0<=i<m and 0<=j<n and grid[i][j] == '1'):     
+              dfs_search(grid,i,j)
+  
+  class Solution(object):
+      def numIslands(self, grid):
+          """
+          :type grid: List[List[str]]
+          :rtype: int
+          """
+          m = len(grid)
+          n = len(grid[0])
+  
+          res = 0
+  
+          for x in range(m):
+              for y in range(n):
+                  if(grid[x][y] == '1'):
+                      res = res + 1
+                      dfs_search(grid,x,y)
+          
+          return res
+          
+  ```
+
+
+
+### 48.2 广度搜索
+
+- O(MN) + O(min(M,N))
+
+-  外层遍历时，**如果为陆地则计数一次，并进行广度搜索淹没所有邻接陆地**
+
+-  广度搜索将所有陆地淹没：
+
+  - 使用队列进行广度搜索；
+    1. 先将当前陆地加入队列
+    2. **当队列不为空时说明当前节点的邻接陆地还未遍历完**
+    3. 取队列的第一个位置(即广度搜索的第一个邻接节点进行遍历淹没)
+
+  ```python
+  
+  class Solution(object):
+      def numIslands(self, grid):
+          """
+          :type grid: List[List[str]]
+          :rtype: int
+          """
+          m = len(grid)
+          n = len(grid[0])
+          cur_neighbor = collections.deque()
+          res = 0
+  
+          for x in range(m):
+              for y in range(n):
+                  if(grid[x][y] == '1'):
+                      grid[x][y] = '0'
+                      res = res + 1
+                      cur_neighbor.append([x,y])
+  
+                      # 广度搜索,先遍历完当前节点的邻接节点;淹没陆地
+                      while(cur_neighbor):
+                          cur = cur_neighbor.popleft()
+                          for i,j in [(cur[0]-1,cur[1]),(cur[0]+1,cur[1]),(cur[0],cur[1]-1),(cur[0],cur[1]+1)]:
+                              if( 0<=i<m and 0<=j<n and grid[i][j] == '1'):
+                                  grid[i][j] = '0'
+                                  cur_neighbor.append([i,j])
+          return res
+          
+  ```
+  
+  
+
+## 49. 腐烂的橘子
+
+> 在给定的 `m x n` 网格 `grid` 中，每个单元格可以有以下三个值之一：
+>
+> - 值 `0` 代表空单元格；
+> - 值 `1` 代表新鲜橘子；
+> - 值 `2` 代表腐烂的橘子。
+>
+> 每分钟，腐烂的橘子 **周围 4 个方向上相邻** 的新鲜橘子都会腐烂。
+>
+> 返回 *直到单元格中没有新鲜橘子为止所必须经过的最小分钟数。如果不可能，返回 `-1`* 
+
+- BFS 广度优先搜索：**腐蚀过程是一个多源广度搜索过程，从多个起点开始对邻接节点腐蚀**
+
+1. 首先遍历记录：**新鲜数量**与**多源腐蚀起始位置**
+
+2. **外层遍历一次，时间增加一次**；内层遍历多源起始位置，进行腐蚀**更新状态新鲜数量**与**起始位置**
+
+   ```python
+   class Solution(object):
+       def orangesRotting(self, grid):
+           """
+           :type grid: List[List[int]]
+           :rtype: int
+           """
+   
+           m = len(grid)
+           n = len(grid[0])
+   
+           time = 0
+           fresh_num = 0
+           r_pos = collections.deque()
+   
+           #记录新鲜橘子数与起始腐蚀位置
+           for i in range(m):
+               for j in range(n):
+                   if(grid[i][j] == 1):
+                       fresh_num = fresh_num + 1
+                   elif(grid[i][j] == 2):
+                       r_pos.append((i,j))
+           
+           #多源腐蚀
+           while(fresh_num > 0 and len(r_pos) != 0):
+               r_num = len(r_pos)
+               for _ in range(r_num):
+                   i,j = r_pos.popleft()
+                   for x,y in [(i-1,j),(i+1,j),(i,j-1),(i,j+1)]:
+                       if( 0<=x<m and 0<=y<n and grid[x][y] == 1):
+                           grid[x][y] = 2
+                           fresh_num = fresh_num - 1
+                           r_pos.append((x,y))
+               time = time + 1
+           
+   
+           if(fresh_num > 0):
+               return -1
+       
+           return time
+                       
+   ```
+
+
+
+
+
+## 50. 课程表
+
+> 你这个学期必须选修 `numCourses` 门课程，记为 `0` 到 `numCourses - 1` 。
+>
+> 在选修某些课程之前需要一些先修课程。 先修课程按数组 `prerequisites` 给出，其中 `prerequisites[i] = [ai, bi]` ，表示如果要学习课程 `ai` 则 **必须** 先学习课程 `bi` 。
+>
+> - 例如，先修课程对 `[0, 1]` 表示：想要学习课程 `0` ，你需要先完成课程 `1` 。
+>
+> 请你判断是否可能完成所有课程的学习？如果可以，返回 `true` ；否则，返回 `false` 。
+>
+> **示例 1：**
+>
+> ```
+> 输入：numCourses = 2, prerequisites = [[1,0]]
+> 输出：true
+> 解释：总共有 2 门课程。学习课程 1 之前，你需要完成课程 0 。这是可能的。
+> ```
+>
+> **示例 2：**
+>
+> ```
+> 输入：numCourses = 2, prerequisites = [[1,0],[0,1]]
+> 输出：false
+> 解释：总共有 2 门课程。学习课程 1 之前，你需要先完成课程 0 ；并且学习课程 0 之前，你还应先完成课程 1 。这是不可能的。
+> ```
+
+- dfs深度搜索
+
+- 首先创建一个邻接链表：每个链表**存储前置需求课程下标**
+
+- 然后从 `0~numCourses`开始**dfs遍历**每一个课程
+
+  - 如果其中一次返回False即检测出环则返回False
+
+  - 每次递归：**三色标记法**：**未访问**，**正在访问**，**访问结束**
+
+    - 如果指向 **-1** 则表示正确结尾或者 **visited**指向的为**访问完成** 则将 **visited** 数组设置为**访问完成**
+    - 如果指向的**visited**位置为**正在访问**，则表示没有结束且前面访问过，即出现环
+    - 将该节点标记为 **正在访问**
+    - dfs遍历该节点的前置节点，如果其中一次返回False即检测出环则返回False
+
+    ```python
+    class Solution(object):
+        def canFinish(self, numCourses, prerequisites):
+            """
+            :type numCourses: int
+            :type prerequisites: List[List[int]]
+            :rtype: bool
+            """
+            alist = [-1] * numCourses
+    
+            for a,b in prerequisites:
+                if(alist[a] == -1):
+                    alist[a] = [b]
+                else:
+                    alist[a].append(b)
+            
+            def dfs(alist,idx,visited):
+                # 结尾
+                if(alist[idx] == -1 or visited[idx] == 2):
+                    visited[idx] = 2
+                    return True
+                #环
+                if(visited[idx] == 1):
+                    return False
+    
+                visited[idx] = 1
+                for pre_idx in alist[idx]:
+                    res = dfs(alist,pre_idx,visited)
+                    if(res is False):
+                        return False
+                visited[idx] = 2
+                return True
+            #递归搜索时判断是否存在环，需要回溯
+            visited = [0] * numCourses
+    
+            for idx in range(numCourses):
+                if(alist[idx] != -1):
+                    res = dfs(alist,idx,visited)
+                    if(res is False):
+                        return False
+            return True
+    ```
+
+    
+
+## 51. 实现 Trie (前缀树)
+
+> **[Trie](https://baike.baidu.com/item/字典树/9825209?fr=aladdin)**（发音类似 "try"）或者说 **前缀树** 是一种树形数据结构，用于高效地存储和检索字符串数据集中的键。这一数据结构有相当多的应用情景，例如自动补全和拼写检查。
+>
+> 请你实现 Trie 类：
+>
+> - `Trie()` 初始化前缀树对象。
+> - `void insert(String word)` 向前缀树中插入字符串 `word` 。
+> - `boolean search(String word)` 如果字符串 `word` 在前缀树中，返回 `true`（即，在检索之前已经插入）；否则，返回 `false` 。
+> - `boolean startsWith(String prefix)` 如果之前已经插入的字符串 `word` 的前缀之一为 `prefix` ，返回 `true` ；否则，返回 `false` 。
+>
+>  
+>
+> **示例：**
+>
+> ```
+> 输入
+> ["Trie", "insert", "search", "search", "startsWith", "insert", "search"]
+> [[], ["apple"], ["apple"], ["app"], ["app"], ["app"], ["app"]]
+> 输出
+> [null, null, true, false, true, null, true]
+> 
+> 解释
+> Trie trie = new Trie();
+> trie.insert("apple");
+> trie.search("apple");   // 返回 True
+> trie.search("app");     // 返回 False
+> trie.startsWith("app"); // 返回 True
+> trie.insert("app");
+> trie.search("app");     // 返回 True
+> ```
+
+- 设计26叉树，**将单词每个字母看作一个节点，必定属于0-26其中一个索引**
+
+  - `self.node = [None] * 26 `
+  - `self.end = False`
+
+- `insert`一个单词时，如果这个字符对应的节点为空，**说明此时存在分叉，创建新的对象并通过尾插法链接**，最后一个字符节点设置一个单词结尾标识
+
+- `search`与 `startsWith`函数时候，遍历单词，**如果出现空节点则返回False**，末尾如果不是单词结尾，则`search` 返回 `False`,其他情况返回正确
+
+  ```python
+  class Trie(object):
+  
+      def __init__(self):
+          self.node = [None] * 26
+          self.end = False
+  
+      def insert(self, word):
+          """
+          :type word: str
+          :rtype: None
+          """
+          tail = self
+          for ch in word:
+              chidx = ord(ch) - ord('a')
+              if(tail.node[chidx] is None):
+                  tail.node[chidx] = Trie()
+              tail = tail.node[chidx]
+          tail.end = True
+  
+      def search(self, word):
+          """
+          :type word: str
+          :rtype: bool
+          """
+          tail = self
+          for ch in word:
+              chidx = ord(ch) - ord('a')
+              if(tail.node[chidx] is None):
+                  return False
+              tail = tail.node[chidx]
+          if(tail.end):
+              return True
+          return False
+      def startsWith(self, prefix):
+          """
+          :type prefix: str
+          :rtype: bool
+          """
+          tail = self
+          for ch in prefix:
+              chidx = ord(ch) - ord('a')
+              if(tail.node[chidx] is None):
+                  return False
+              tail = tail.node[chidx]
+          return True
+  
+  
+  # Your Trie object will be instantiated and called as such:
+  # obj = Trie()
+  # obj.insert(word)
+  # param_2 = obj.search(word)
+  # param_3 = obj.startsWith(prefix)
+  ```
+
+  
+
+## 51. 两数相加
+
+> 给你两个 **非空** 的链表，表示两个非负的整数。它们每位数字都是按照 **逆序** 的方式存储的，并且每个节点只能存储 **一位** 数字。
+>
+> 请你将两个数相加，并以相同形式返回一个表示和的链表。
+>
+> 你可以假设除了数字 0 之外，这两个数都不会以 0 开头。
+>
+> **示例 1：**
+>
+> ```
+> 输入：l1 = [2,4,3], l2 = [5,6,4]
+> 输出：[7,0,8]
+> 解释：342 + 465 = 807.
+> ```
+>
+> **示例 2：**
+>
+> ```
+> 输入：l1 = [0], l2 = [0]
+> 输出：[0]
+> ```
+>
+> **示例 3：**
+>
+> ```
+> 输入：l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
+> 输出：[8,9,9,9,0,0,0,1]
+> ```
+
+1. **保留两个链表起始位置**，逐位做加法并同时更新 `l1.val,l2.val`
+
+2. 当遇到相同长度的`l1`与`l2`
+
+   1. **如果最后一位还存在进位，新建一个进位节点返回**
+   2. 否则直接返回
+
+3. 对于不等长的`l1`与`l2`，**遍历剩下的节点与进位 `add`相加并更新对应的 `val`并返回对应的链表起始位置**
+
+   ```python
+   # Definition for singly-linked list.
+   # class ListNode(object):
+   #     def __init__(self, val=0, next=None):
+   #         self.val = val
+   #         self.next = next
+   class Solution(object):
+       def addTwoNumbers(self, l1, l2):
+           """
+           :type l1: Optional[ListNode]
+           :type l2: Optional[ListNode]
+           :rtype: Optional[ListNode]
+           """
+           l1_temp = l1
+           l2_temp = l2
+   
+           add = 0
+   
+           while(l1 and l2):
+               digitsum = l1.val + l2.val + add 
+               digit = digitsum % 10
+               add = digitsum / 10
+   
+               l1.val = digit
+               l2.val = digit
+               if(l1.next is None and l2.next is None):
+                   if(add):
+                       l1.next = ListNode(add)
+                       return l1_temp
+                   else:
+                       return l1_temp
+               l1 = l1.next
+               l2 = l2.next
+   
+           if(l1):
+               while(l1):
+                   digitsum = l1.val + add 
+                   digit = digitsum % 10
+                   add = digitsum / 10
+   
+                   l1.val = digit
+                   if(l1.next is None and add):
+                       l1.next = ListNode(add)
+                       break
+                   l1 = l1.next
+               return l1_temp
+   
+           if(l2):
+               while(l2):
+                   digitsum = l2.val + add 
+                   digit = digitsum % 10
+                   add = digitsum / 10
+   
+                   l2.val = digit
+                   if(l2.next is None and add):
+                       l2.next = ListNode(add)
+                       break
+                   l2 = l2.next
+               return l2_temp
+   
+           
+   ```
+
+   
 
 
 
